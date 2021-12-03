@@ -1,20 +1,23 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
-        private readonly FromServerDto _fromServerDto;
+        private readonly HashSet<int> _differentChunkIds;
+        private readonly FromServerDto _initialFromServerDto;
         
         public TerraformingDtoCalculator()
         {
-            _fromServerDto = new FromServerDto();
+            _initialFromServerDto = new FromServerDto();
+            _differentChunkIds = new HashSet<int>();
         }
 
         public long InitialFillDto()
         {
-            _fromServerDto.ChankDtos.Clear();
+            _initialFromServerDto.ChankDtos.Clear();
             
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -48,11 +51,18 @@ namespace TerraformingDtoCalculator
                     chunkDto.VertListZ.Add(0f);
                 }
                 
-                _fromServerDto.ChankDtos.Add(chunkDto);
+                _initialFromServerDto.ChankDtos.Add(chunkDto);
             }
             
             stopwatch.Stop();
             return stopwatch.ElapsedMilliseconds;
+        }
+
+        public void GenerateDifferentChankIds()
+        {
+            _differentChunkIds.Clear();
+            
+            
         }
     }
 }

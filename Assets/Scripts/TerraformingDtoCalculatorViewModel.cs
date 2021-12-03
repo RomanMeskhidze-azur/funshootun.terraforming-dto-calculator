@@ -10,6 +10,7 @@ namespace TerraformingDtoCalculator
         [SerializeField] private Text _verticesCountText;
         [SerializeField] private Text _indicesCountText;
         [SerializeField] private Text _vertListCountText;
+        [SerializeField] private Text _generateDiffChunksPercentsText;
 
         [SerializeField] private Button _runTestButton;
 
@@ -17,12 +18,13 @@ namespace TerraformingDtoCalculator
 
         private TerraformingDtoCalculator _terraformingDtoCalculator;
 
-        private void Awake()
+        private void Start()
         {
             _chunksCountText.text = $"Chucks count: {TerraformingDtoCalculatorConstants.ChunksMaxCount}";
             _verticesCountText.text = $"Vertices per chunk count: {TerraformingDtoCalculatorConstants.VerticesMaxCount}";
             _indicesCountText.text = $"Indices per chunk count: {TerraformingDtoCalculatorConstants.IndicesMaxCount}";
             _vertListCountText.text = $"VertList per chunk count: {TerraformingDtoCalculatorConstants.VertListMaxCount}";
+            _generateDiffChunksPercentsText.text = $"Generate diff chunk percents: {(int) (TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents * 100)}";
             _resultText.text = "Result: ";
             
             _runTestButton.onClick.AddListener(RunTests);

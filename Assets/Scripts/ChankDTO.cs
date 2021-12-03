@@ -8,7 +8,7 @@ namespace TerraformingDtoCalculator
     [Serializable]
     public partial class ChunkDTO : System.IEquatable<ChunkDTO>
     {
-        public System.Collections.Generic.List<Int16> Vertices = new System.Collections.Generic.List<Int16>();
+        public System.Collections.Generic.List<Int16> Vertices = new System.Collections.Generic.List<Int16>(TerraformingDtoCalculatorConstants.VerticesMaxCount);
 
         public int VerticesCount
         {
@@ -32,7 +32,7 @@ namespace TerraformingDtoCalculator
             set => Vertices[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Int32> Indices = new System.Collections.Generic.List<Int32>();
+        public System.Collections.Generic.List<Int32> Indices = new System.Collections.Generic.List<Int32>(TerraformingDtoCalculatorConstants.IndicesMaxCount);
 
         public int IndicesCount
         {
@@ -56,7 +56,7 @@ namespace TerraformingDtoCalculator
             set => Indices[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListX = new System.Collections.Generic.List<Single>();
+        public System.Collections.Generic.List<Single> VertListX = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListXCount
         {
@@ -80,7 +80,7 @@ namespace TerraformingDtoCalculator
             set => VertListX[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListY = new System.Collections.Generic.List<Single>();
+        public System.Collections.Generic.List<Single> VertListY = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListYCount
         {
@@ -104,7 +104,7 @@ namespace TerraformingDtoCalculator
             set => VertListY[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListZ = new System.Collections.Generic.List<Single>();
+        public System.Collections.Generic.List<Single> VertListZ = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListZCount
         {
