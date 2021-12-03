@@ -21,7 +21,7 @@ namespace TerraformingDtoCalculator
 
             for (var i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
             {
-                var chunkDto = new ChankDTO();
+                var chunkDto = new ChunkDTO();
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
@@ -35,7 +35,17 @@ namespace TerraformingDtoCalculator
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertList.Add(Vector3.zero);
+                    chunkDto.VertListX.Add(0f);
+                }
+                
+                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                {
+                    chunkDto.VertListY.Add(0f);
+                }
+                
+                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                {
+                    chunkDto.VertListZ.Add(0f);
                 }
                 
                 _fromServerDto.ChankDtos.Add(chunkDto);
