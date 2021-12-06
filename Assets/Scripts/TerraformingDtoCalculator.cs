@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Common.Utils.Serialization;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
+        private const int OutputBufferSize = 2048000;
+        
         private readonly HashSet<int> _fromInitialChunkIds;
         private FromServerDto _initialFromServerDto;
         private FromServerDto _differentFromServerDto;
         
-        private readonly ISerializer _writer = new StrictBitsPacker(new byte[8]);
-        
+        private byte[] _genOutputBuf;
+
         public TerraformingDtoCalculator()
         {
             _fromInitialChunkIds = new HashSet<int>();
@@ -121,26 +123,43 @@ namespace TerraformingDtoCalculator
                 
                 chunkDto.Generation = 2;
                 
-                _initialFromServerDto.ChankDtos.Add(chunkDto);
+                _differentFromServerDto.ChankDtos.Add(chunkDto);
             }
             
             stopwatch.Stop();
             return stopwatch.ElapsedMilliseconds;
         }
 
-        public (long, long) SerDiff()
+        public (long, long, long) SerDeserDiff()
         {
-            _writer.Clear();
-            var ms = new MemoryStream();
-            _writer.SetStream(ms);
+            var clientSerPacker = new StrictBitsPacker(new byte[8]);
+            _genOutputBuf = new byte[OutputBufferSize];
+            var ms = new MemoryStream(_genOutputBuf, 0, _genOutputBuf.Length, true, true);
+            clientSerPacker.SetStream(ms);
             
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var serStopwatch = new Stopwatch();
+            serStopwatch.Start();
             
-            _differentFromServerDto.SerDiff(_writer, _initialFromServerDto);
+            _differentFromServerDto.SerDiff(clientSerPacker, _initialFromServerDto);
             
-            stopwatch.Stop();
-            return (stopwatch.ElapsedMilliseconds, ms.Position);
+            serStopwatch.Stop();
+            
+            clientSerPacker.Flush();
+            var generatedArray = new ArraySegment<byte>(_genOutputBuf, 0, (int) ms.Position);
+            
+            var clientDeserPacker = new StrictBitsPacker(new byte[8]);
+            var stream = new MemoryStream(generatedArray.Array, generatedArray.Offset, generatedArray.Count);
+            clientDeserPacker.SetStream(stream);
+
+            var deserStopWatch = new Stopwatch();
+            deserStopWatch.Start();
+
+            var deseredDto = new FromServerDto();
+            deseredDto.DeserDiff(clientDeserPacker, _initialFromServerDto);
+            
+            deserStopWatch.Stop();
+
+            return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
         }
     }
 }
