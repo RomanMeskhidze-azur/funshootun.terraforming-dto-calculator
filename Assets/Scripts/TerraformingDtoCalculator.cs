@@ -45,17 +45,17 @@ namespace TerraformingDtoCalculator
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListX.Add(0f);
+                    chunkDto.VertListX.Add(0);
                 }
                 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListY.Add(0f);
+                    chunkDto.VertListY.Add(0);
                 }
                 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListZ.Add(0f);
+                    chunkDto.VertListZ.Add(0);
                 }
 
                 chunkDto.Generation = 1;
@@ -108,17 +108,17 @@ namespace TerraformingDtoCalculator
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListX.Add(1f);
+                    chunkDto.VertListX.Add(1);
                 }
                 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListY.Add(1f);
+                    chunkDto.VertListY.Add(1);
                 }
                 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
                 {
-                    chunkDto.VertListZ.Add(1f);
+                    chunkDto.VertListZ.Add(1);
                 }
                 
                 chunkDto.Generation = 2;

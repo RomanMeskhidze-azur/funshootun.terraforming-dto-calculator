@@ -55,12 +55,12 @@ namespace TerraformingDtoCalculator
             set => Indices[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListX = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
+        public System.Collections.Generic.List<Byte> VertListX = new System.Collections.Generic.List<Byte>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListXCount
         {
             get => VertListX.Count;
-            set => VertListX.Resize(value, () => new Single());
+            set => VertListX.Resize(value, () => new Byte());
         }
 
         public struct VertListXIndexer
@@ -73,18 +73,18 @@ namespace TerraformingDtoCalculator
             public int Index;
         }
 
-        public Single this[VertListXIndexer index]
+        public Byte this[VertListXIndexer index]
         {
             get => VertListX[index.Index];
             set => VertListX[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListY = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
+        public System.Collections.Generic.List<Byte> VertListY = new System.Collections.Generic.List<Byte>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListYCount
         {
             get => VertListY.Count;
-            set => VertListY.Resize(value, () => new Single());
+            set => VertListY.Resize(value, () => new Byte());
         }
 
         public struct VertListYIndexer
@@ -97,18 +97,18 @@ namespace TerraformingDtoCalculator
             public int Index;
         }
 
-        public Single this[VertListYIndexer index]
+        public Byte this[VertListYIndexer index]
         {
             get => VertListY[index.Index];
             set => VertListY[index.Index] = value;
         }
 
-        public System.Collections.Generic.List<Single> VertListZ = new System.Collections.Generic.List<Single>(TerraformingDtoCalculatorConstants.VertListMaxCount);
+        public System.Collections.Generic.List<Byte> VertListZ = new System.Collections.Generic.List<Byte>(TerraformingDtoCalculatorConstants.VertListMaxCount);
 
         public int VertListZCount
         {
             get => VertListZ.Count;
-            set => VertListZ.Resize(value, () => new Single());
+            set => VertListZ.Resize(value, () => new Byte());
         }
 
         public struct VertListZIndexer
@@ -121,7 +121,7 @@ namespace TerraformingDtoCalculator
             public int Index;
         }
 
-        public Single this[VertListZIndexer index]
+        public Byte this[VertListZIndexer index]
         {
             get => VertListZ[index.Index];
             set => VertListZ[index.Index] = value;
@@ -149,7 +149,7 @@ namespace TerraformingDtoCalculator
             packer.WriteInt(VerticesCount, 11);
             for (int i = 0; i < VerticesCount; i++)
             {
-                packer.WriteShort(this[new VerticesIndexer(i)], 16);
+                packer.WriteShort(this[new VerticesIndexer(i)], 14);
             }
 
 #if UNITY_EDITOR
@@ -159,7 +159,7 @@ namespace TerraformingDtoCalculator
             packer.WriteInt(IndicesCount, 13);
             for (int i = 0; i < IndicesCount; i++)
             {
-                packer.WriteInt(this[new IndicesIndexer(i)], 32);
+                packer.WriteInt(this[new IndicesIndexer(i)], 13);
             }
 
 #if UNITY_EDITOR
@@ -169,7 +169,7 @@ namespace TerraformingDtoCalculator
             packer.WriteInt(VertListXCount, 13);
             for (int i = 0; i < VertListXCount; i++)
             {
-                packer.WriteFloat(this[new VertListXIndexer(i)]);
+                packer.WriteByte(this[new VertListXIndexer(i)], 8);
             }
 
 #if UNITY_EDITOR
@@ -179,7 +179,7 @@ namespace TerraformingDtoCalculator
             packer.WriteInt(VertListYCount, 13);
             for (int i = 0; i < VertListYCount; i++)
             {
-                packer.WriteFloat(this[new VertListYIndexer(i)]);
+                packer.WriteByte(this[new VertListYIndexer(i)], 8);
             }
 
 #if UNITY_EDITOR
@@ -189,7 +189,7 @@ namespace TerraformingDtoCalculator
             packer.WriteInt(VertListZCount, 13);
             for (int i = 0; i < VertListZCount; i++)
             {
-                packer.WriteFloat(this[new VertListZIndexer(i)]);
+                packer.WriteByte(this[new VertListZIndexer(i)], 8);
             }
         }
 
@@ -198,7 +198,6 @@ namespace TerraformingDtoCalculator
             return IsEqual(other);
         }
 
-        // ЗАМЕНА ОТ СГЕНЕРИРОВАННОГО
         public bool IsEqual(ChunkDTO other)
         {
             return this.Generation == other.Generation;
@@ -212,7 +211,7 @@ namespace TerraformingDtoCalculator
             Vertices.Resize(VerticesCount, () => new Int16());
             for (int i = 0; i < VerticesCount; i++)
             {
-                this[new VerticesIndexer(i)] = packer.ReadShort(16);
+                this[new VerticesIndexer(i)] = packer.ReadShort(14);
             }
 
             int IndicesCount;
@@ -220,31 +219,31 @@ namespace TerraformingDtoCalculator
             Indices.Resize(IndicesCount, () => new Int32());
             for (int i = 0; i < IndicesCount; i++)
             {
-                this[new IndicesIndexer(i)] = packer.ReadInt(32);
+                this[new IndicesIndexer(i)] = packer.ReadInt(13);
             }
 
             int VertListXCount;
             VertListXCount = packer.ReadInt(13);
-            VertListX.Resize(VertListXCount, () => new Single());
+            VertListX.Resize(VertListXCount, () => new Byte());
             for (int i = 0; i < VertListXCount; i++)
             {
-                this[new VertListXIndexer(i)] = packer.ReadFloat();
+                this[new VertListXIndexer(i)] = packer.ReadByte(8);
             }
 
             int VertListYCount;
             VertListYCount = packer.ReadInt(13);
-            VertListY.Resize(VertListYCount, () => new Single());
+            VertListY.Resize(VertListYCount, () => new Byte());
             for (int i = 0; i < VertListYCount; i++)
             {
-                this[new VertListYIndexer(i)] = packer.ReadFloat();
+                this[new VertListYIndexer(i)] = packer.ReadByte(8);
             }
 
             int VertListZCount;
             VertListZCount = packer.ReadInt(13);
-            VertListZ.Resize(VertListZCount, () => new Single());
+            VertListZ.Resize(VertListZCount, () => new Byte());
             for (int i = 0; i < VertListZCount; i++)
             {
-                this[new VertListZIndexer(i)] = packer.ReadFloat();
+                this[new VertListZIndexer(i)] = packer.ReadByte(8);
             }
         }
 
@@ -262,7 +261,7 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
                     if (this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)])
                     {
-                        packer.WriteShort(this[new VerticesIndexer(i)], 16);
+                        packer.WriteShort(this[new VerticesIndexer(i)], 14);
                     }
                 }
             }
@@ -275,13 +274,13 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
                     if (this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)])
                     {
-                        packer.WriteShort(this[new VerticesIndexer(i)], 16);
+                        packer.WriteShort(this[new VerticesIndexer(i)], 14);
                     }
                 }
 
                 for (int i = countToDiff; i < VerticesCount; i++)
                 {
-                    packer.WriteShort(this[new VerticesIndexer(i)], 16);
+                    packer.WriteShort(this[new VerticesIndexer(i)], 14);
                 }
             }
 
@@ -295,7 +294,7 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
                     if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
                     {
-                        packer.WriteInt(this[new IndicesIndexer(i)], 32);
+                        packer.WriteInt(this[new IndicesIndexer(i)], 13);
                     }
                 }
             }
@@ -308,13 +307,13 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
                     if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
                     {
-                        packer.WriteInt(this[new IndicesIndexer(i)], 32);
+                        packer.WriteInt(this[new IndicesIndexer(i)], 13);
                     }
                 }
 
                 for (int i = countToDiff; i < IndicesCount; i++)
                 {
-                    packer.WriteInt(this[new IndicesIndexer(i)], 32);
+                    packer.WriteInt(this[new IndicesIndexer(i)], 13);
                 }
             }
 
@@ -328,7 +327,7 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
                     if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListXIndexer(i)]);
+                        packer.WriteByte(this[new VertListXIndexer(i)], 8);
                     }
                 }
             }
@@ -341,13 +340,13 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
                     if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListXIndexer(i)]);
+                        packer.WriteByte(this[new VertListXIndexer(i)], 8);
                     }
                 }
 
                 for (int i = countToDiff; i < VertListXCount; i++)
                 {
-                    packer.WriteFloat(this[new VertListXIndexer(i)]);
+                    packer.WriteByte(this[new VertListXIndexer(i)], 8);
                 }
             }
 
@@ -361,7 +360,7 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
                     if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListYIndexer(i)]);
+                        packer.WriteByte(this[new VertListYIndexer(i)], 8);
                     }
                 }
             }
@@ -374,13 +373,13 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
                     if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListYIndexer(i)]);
+                        packer.WriteByte(this[new VertListYIndexer(i)], 8);
                     }
                 }
 
                 for (int i = countToDiff; i < VertListYCount; i++)
                 {
-                    packer.WriteFloat(this[new VertListYIndexer(i)]);
+                    packer.WriteByte(this[new VertListYIndexer(i)], 8);
                 }
             }
 
@@ -394,7 +393,7 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
                     if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListZIndexer(i)]);
+                        packer.WriteByte(this[new VertListZIndexer(i)], 8);
                     }
                 }
             }
@@ -407,13 +406,13 @@ namespace TerraformingDtoCalculator
                     packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
                     if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
                     {
-                        packer.WriteFloat(this[new VertListZIndexer(i)]);
+                        packer.WriteByte(this[new VertListZIndexer(i)], 8);
                     }
                 }
 
                 for (int i = countToDiff; i < VertListZCount; i++)
                 {
-                    packer.WriteFloat(this[new VertListZIndexer(i)]);
+                    packer.WriteByte(this[new VertListZIndexer(i)], 8);
                 }
             }
         }
@@ -430,7 +429,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VerticesIndexer(i)] = packer.ReadShort(16);
+                        this[new VerticesIndexer(i)] = packer.ReadShort(14);
                     }
                     else
                     {
@@ -446,7 +445,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VerticesIndexer(i)] = packer.ReadShort(16);
+                        this[new VerticesIndexer(i)] = packer.ReadShort(14);
                     }
                     else
                     {
@@ -456,7 +455,7 @@ namespace TerraformingDtoCalculator
 
                 for (int i = countToDiff; i < VerticesCount; i++)
                 {
-                    this[new VerticesIndexer(i)] = packer.ReadShort(16);
+                    this[new VerticesIndexer(i)] = packer.ReadShort(14);
                 }
             }
 
@@ -468,7 +467,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new IndicesIndexer(i)] = packer.ReadInt(32);
+                        this[new IndicesIndexer(i)] = packer.ReadInt(13);
                     }
                     else
                     {
@@ -484,7 +483,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new IndicesIndexer(i)] = packer.ReadInt(32);
+                        this[new IndicesIndexer(i)] = packer.ReadInt(13);
                     }
                     else
                     {
@@ -494,7 +493,7 @@ namespace TerraformingDtoCalculator
 
                 for (int i = countToDiff; i < IndicesCount; i++)
                 {
-                    this[new IndicesIndexer(i)] = packer.ReadInt(32);
+                    this[new IndicesIndexer(i)] = packer.ReadInt(13);
                 }
             }
 
@@ -506,7 +505,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListXIndexer(i)] = packer.ReadFloat();
+                        this[new VertListXIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -522,7 +521,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListXIndexer(i)] = packer.ReadFloat();
+                        this[new VertListXIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -532,7 +531,7 @@ namespace TerraformingDtoCalculator
 
                 for (int i = countToDiff; i < VertListXCount; i++)
                 {
-                    this[new VertListXIndexer(i)] = packer.ReadFloat();
+                    this[new VertListXIndexer(i)] = packer.ReadByte(8);
                 }
             }
 
@@ -544,7 +543,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListYIndexer(i)] = packer.ReadFloat();
+                        this[new VertListYIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -560,7 +559,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListYIndexer(i)] = packer.ReadFloat();
+                        this[new VertListYIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -570,7 +569,7 @@ namespace TerraformingDtoCalculator
 
                 for (int i = countToDiff; i < VertListYCount; i++)
                 {
-                    this[new VertListYIndexer(i)] = packer.ReadFloat();
+                    this[new VertListYIndexer(i)] = packer.ReadByte(8);
                 }
             }
 
@@ -582,7 +581,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListZIndexer(i)] = packer.ReadFloat();
+                        this[new VertListZIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -598,7 +597,7 @@ namespace TerraformingDtoCalculator
                 {
                     if (packer.ReadBool())
                     {
-                        this[new VertListZIndexer(i)] = packer.ReadFloat();
+                        this[new VertListZIndexer(i)] = packer.ReadByte(8);
                     }
                     else
                     {
@@ -608,7 +607,7 @@ namespace TerraformingDtoCalculator
 
                 for (int i = countToDiff; i < VertListZCount; i++)
                 {
-                    this[new VertListZIndexer(i)] = packer.ReadFloat();
+                    this[new VertListZIndexer(i)] = packer.ReadByte(8);
                 }
             }
         }

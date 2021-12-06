@@ -168,7 +168,7 @@ namespace TerraformingDtoCalculator
                         {
                             if (other[new ChankDtosIndexer(i)] != null)
                             {
-                                other[new ChankDtosIndexer(i)].CopyTo(this[new ChankDtosIndexer(i)]);
+                                other[new ChankDtosIndexer(i)] = this[new ChankDtosIndexer(i)];
                             }
                             else
                             {
