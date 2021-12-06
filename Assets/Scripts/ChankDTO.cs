@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using Common.Utils.Serialization;
-using UnityEngine;
 
 namespace TerraformingDtoCalculator
 {
     [Serializable]
     public partial class ChunkDTO : System.IEquatable<ChunkDTO>
     {
+        public Byte Generation;
         public System.Collections.Generic.List<Int16> Vertices = new System.Collections.Generic.List<Int16>(TerraformingDtoCalculatorConstants.VerticesMaxCount);
 
         public int VerticesCount
@@ -141,51 +140,53 @@ namespace TerraformingDtoCalculator
 
         public virtual void Ser(ISerializer packer)
         {
+            packer.WriteByte(Generation, 8);
+
 #if UNITY_EDITOR
-            if (VerticesCount > 11) throw new System.Exception("Max possible value for VerticesCount is 11");
+            if (VerticesCount > 1331) throw new System.Exception("Max possible value for VerticesCount is 1331");
 #endif
 
-            packer.WriteInt(VerticesCount, 4);
+            packer.WriteInt(VerticesCount, 11);
             for (int i = 0; i < VerticesCount; i++)
             {
                 packer.WriteShort(this[new VerticesIndexer(i)], 16);
             }
 
 #if UNITY_EDITOR
-            if (IndicesCount > 11) throw new System.Exception("Max possible value for IndicesCount is 11");
+            if (IndicesCount > 5000) throw new System.Exception("Max possible value for IndicesCount is 5000");
 #endif
 
-            packer.WriteInt(IndicesCount, 4);
+            packer.WriteInt(IndicesCount, 13);
             for (int i = 0; i < IndicesCount; i++)
             {
                 packer.WriteInt(this[new IndicesIndexer(i)], 32);
             }
 
 #if UNITY_EDITOR
-            if (VertListXCount > 11) throw new System.Exception("Max possible value for VertListXCount is 11");
+            if (VertListXCount > 5000) throw new System.Exception("Max possible value for VertListXCount is 5000");
 #endif
 
-            packer.WriteInt(VertListXCount, 4);
+            packer.WriteInt(VertListXCount, 13);
             for (int i = 0; i < VertListXCount; i++)
             {
                 packer.WriteFloat(this[new VertListXIndexer(i)]);
             }
 
 #if UNITY_EDITOR
-            if (VertListYCount > 11) throw new System.Exception("Max possible value for VertListYCount is 11");
+            if (VertListYCount > 5000) throw new System.Exception("Max possible value for VertListYCount is 5000");
 #endif
 
-            packer.WriteInt(VertListYCount, 4);
+            packer.WriteInt(VertListYCount, 13);
             for (int i = 0; i < VertListYCount; i++)
             {
                 packer.WriteFloat(this[new VertListYIndexer(i)]);
             }
 
 #if UNITY_EDITOR
-            if (VertListZCount > 11) throw new System.Exception("Max possible value for VertListZCount is 11");
+            if (VertListZCount > 5000) throw new System.Exception("Max possible value for VertListZCount is 5000");
 #endif
 
-            packer.WriteInt(VertListZCount, 4);
+            packer.WriteInt(VertListZCount, 13);
             for (int i = 0; i < VertListZCount; i++)
             {
                 packer.WriteFloat(this[new VertListZIndexer(i)]);
@@ -197,45 +198,17 @@ namespace TerraformingDtoCalculator
             return IsEqual(other);
         }
 
+        // ЗАМЕНА ОТ СГЕНЕРИРОВАННОГО
         public bool IsEqual(ChunkDTO other)
         {
-            if (!this.VerticesCount.Equals(other.VerticesCount)) return false;
-            for (int i = 0; i < VerticesCount; i++)
-            {
-                if (!this[new VerticesIndexer(i)].Equals(other[new VerticesIndexer(i)])) return false;
-            }
-
-            if (!this.IndicesCount.Equals(other.IndicesCount)) return false;
-            for (int i = 0; i < IndicesCount; i++)
-            {
-                if (!this[new IndicesIndexer(i)].Equals(other[new IndicesIndexer(i)])) return false;
-            }
-
-            if (!this.VertListXCount.Equals(other.VertListXCount)) return false;
-            for (int i = 0; i < VertListXCount; i++)
-            {
-                if (!this[new VertListXIndexer(i)].Equals(other[new VertListXIndexer(i)])) return false;
-            }
-
-            if (!this.VertListYCount.Equals(other.VertListYCount)) return false;
-            for (int i = 0; i < VertListYCount; i++)
-            {
-                if (!this[new VertListYIndexer(i)].Equals(other[new VertListYIndexer(i)])) return false;
-            }
-
-            if (!this.VertListZCount.Equals(other.VertListZCount)) return false;
-            for (int i = 0; i < VertListZCount; i++)
-            {
-                if (!this[new VertListZIndexer(i)].Equals(other[new VertListZIndexer(i)])) return false;
-            }
-
-            return true;
+            return this.Generation == other.Generation;
         }
 
         public virtual void Deser(ISerializer packer)
         {
+            Generation = packer.ReadByte(8);
             int VerticesCount;
-            VerticesCount = packer.ReadInt(4);
+            VerticesCount = packer.ReadInt(11);
             Vertices.Resize(VerticesCount, () => new Int16());
             for (int i = 0; i < VerticesCount; i++)
             {
@@ -243,7 +216,7 @@ namespace TerraformingDtoCalculator
             }
 
             int IndicesCount;
-            IndicesCount = packer.ReadInt(4);
+            IndicesCount = packer.ReadInt(13);
             Indices.Resize(IndicesCount, () => new Int32());
             for (int i = 0; i < IndicesCount; i++)
             {
@@ -251,7 +224,7 @@ namespace TerraformingDtoCalculator
             }
 
             int VertListXCount;
-            VertListXCount = packer.ReadInt(4);
+            VertListXCount = packer.ReadInt(13);
             VertListX.Resize(VertListXCount, () => new Single());
             for (int i = 0; i < VertListXCount; i++)
             {
@@ -259,7 +232,7 @@ namespace TerraformingDtoCalculator
             }
 
             int VertListYCount;
-            VertListYCount = packer.ReadInt(4);
+            VertListYCount = packer.ReadInt(13);
             VertListY.Resize(VertListYCount, () => new Single());
             for (int i = 0; i < VertListYCount; i++)
             {
@@ -267,7 +240,7 @@ namespace TerraformingDtoCalculator
             }
 
             int VertListZCount;
-            VertListZCount = packer.ReadInt(4);
+            VertListZCount = packer.ReadInt(13);
             VertListZ.Resize(VertListZCount, () => new Single());
             for (int i = 0; i < VertListZCount; i++)
             {
@@ -278,7 +251,8 @@ namespace TerraformingDtoCalculator
         public virtual void SerDiff(ISerializer packer, ChunkDTO data)
         {
             var other = data;
-            packer.WriteInt(VerticesCount, 4);
+            packer.WriteByte(Generation, 8);
+            packer.WriteInt(VerticesCount, 11);
             var VerticesCountEqual = VerticesCount == other.VerticesCount;
             packer.WriteBool(VerticesCountEqual);
             if (VerticesCountEqual)
@@ -295,7 +269,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 var countToDiff = VerticesCount < other.VerticesCount ? VerticesCount : other.VerticesCount;
-                packer.WriteInt(countToDiff, 4);
+                packer.WriteInt(countToDiff, 11);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
@@ -311,7 +285,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            packer.WriteInt(IndicesCount, 4);
+            packer.WriteInt(IndicesCount, 13);
             var IndicesCountEqual = IndicesCount == other.IndicesCount;
             packer.WriteBool(IndicesCountEqual);
             if (IndicesCountEqual)
@@ -328,7 +302,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 var countToDiff = IndicesCount < other.IndicesCount ? IndicesCount : other.IndicesCount;
-                packer.WriteInt(countToDiff, 4);
+                packer.WriteInt(countToDiff, 13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
@@ -344,7 +318,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            packer.WriteInt(VertListXCount, 4);
+            packer.WriteInt(VertListXCount, 13);
             var VertListXCountEqual = VertListXCount == other.VertListXCount;
             packer.WriteBool(VertListXCountEqual);
             if (VertListXCountEqual)
@@ -361,7 +335,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 var countToDiff = VertListXCount < other.VertListXCount ? VertListXCount : other.VertListXCount;
-                packer.WriteInt(countToDiff, 4);
+                packer.WriteInt(countToDiff, 13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
@@ -377,7 +351,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            packer.WriteInt(VertListYCount, 4);
+            packer.WriteInt(VertListYCount, 13);
             var VertListYCountEqual = VertListYCount == other.VertListYCount;
             packer.WriteBool(VertListYCountEqual);
             if (VertListYCountEqual)
@@ -394,7 +368,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 var countToDiff = VertListYCount < other.VertListYCount ? VertListYCount : other.VertListYCount;
-                packer.WriteInt(countToDiff, 4);
+                packer.WriteInt(countToDiff, 13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
@@ -410,7 +384,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            packer.WriteInt(VertListZCount, 4);
+            packer.WriteInt(VertListZCount, 13);
             var VertListZCountEqual = VertListZCount == other.VertListZCount;
             packer.WriteBool(VertListZCountEqual);
             if (VertListZCountEqual)
@@ -427,7 +401,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 var countToDiff = VertListZCount < other.VertListZCount ? VertListZCount : other.VertListZCount;
-                packer.WriteInt(countToDiff, 4);
+                packer.WriteInt(countToDiff, 13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
@@ -447,7 +421,8 @@ namespace TerraformingDtoCalculator
         public virtual void DeserDiff(ISerializer packer, ChunkDTO data)
         {
             var other = data;
-            VerticesCount = packer.ReadInt(4);
+            Generation = packer.ReadByte(8);
+            VerticesCount = packer.ReadInt(11);
             var VerticesCountEqual = packer.ReadBool();
             if (VerticesCountEqual)
             {
@@ -466,7 +441,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 int countToDiff;
-                countToDiff = packer.ReadInt(4);
+                countToDiff = packer.ReadInt(11);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     if (packer.ReadBool())
@@ -485,7 +460,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            IndicesCount = packer.ReadInt(4);
+            IndicesCount = packer.ReadInt(13);
             var IndicesCountEqual = packer.ReadBool();
             if (IndicesCountEqual)
             {
@@ -504,7 +479,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 int countToDiff;
-                countToDiff = packer.ReadInt(4);
+                countToDiff = packer.ReadInt(13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     if (packer.ReadBool())
@@ -523,7 +498,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            VertListXCount = packer.ReadInt(4);
+            VertListXCount = packer.ReadInt(13);
             var VertListXCountEqual = packer.ReadBool();
             if (VertListXCountEqual)
             {
@@ -542,7 +517,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 int countToDiff;
-                countToDiff = packer.ReadInt(4);
+                countToDiff = packer.ReadInt(13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     if (packer.ReadBool())
@@ -561,7 +536,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            VertListYCount = packer.ReadInt(4);
+            VertListYCount = packer.ReadInt(13);
             var VertListYCountEqual = packer.ReadBool();
             if (VertListYCountEqual)
             {
@@ -580,7 +555,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 int countToDiff;
-                countToDiff = packer.ReadInt(4);
+                countToDiff = packer.ReadInt(13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     if (packer.ReadBool())
@@ -599,7 +574,7 @@ namespace TerraformingDtoCalculator
                 }
             }
 
-            VertListZCount = packer.ReadInt(4);
+            VertListZCount = packer.ReadInt(13);
             var VertListZCountEqual = packer.ReadBool();
             if (VertListZCountEqual)
             {
@@ -618,7 +593,7 @@ namespace TerraformingDtoCalculator
             else
             {
                 int countToDiff;
-                countToDiff = packer.ReadInt(4);
+                countToDiff = packer.ReadInt(13);
                 for (int i = 0; i < countToDiff; i++)
                 {
                     if (packer.ReadBool())

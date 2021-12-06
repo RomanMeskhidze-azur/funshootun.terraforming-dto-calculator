@@ -24,7 +24,7 @@ namespace TerraformingDtoCalculator
             _verticesCountText.text = $"Vertices per chunk count: {TerraformingDtoCalculatorConstants.VerticesMaxCount}";
             _indicesCountText.text = $"Indices per chunk count: {TerraformingDtoCalculatorConstants.IndicesMaxCount}";
             _vertListCountText.text = $"VertList per chunk count: {TerraformingDtoCalculatorConstants.VertListMaxCount}";
-            _generateDiffChunksPercentsText.text = $"Generate diff chunk percents: {(int) (TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents * 100)}";
+            _generateDiffChunksPercentsText.text = $"Generate diff chunk count: {(int) (TerraformingDtoCalculatorConstants.ChunksMaxCount * TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents)}";
             _resultText.text = "Result: ";
             
             _runTestButton.onClick.AddListener(RunTests);
@@ -39,9 +39,15 @@ namespace TerraformingDtoCalculator
 
         private void RunTests()
         {
-            var initializeTime = _terraformingDtoCalculator.InitialFillDto();
+            var fillInitializeTime = _terraformingDtoCalculator.FillInitialFromServerDto();
+            
+            _terraformingDtoCalculator.GenerateDifferentChunkIds();
 
-            _resultText.text = $"Result: InitDto {initializeTime}ms.";
+            var fillDifferentTime = _terraformingDtoCalculator.FillDifferentFromServerDto();
+
+            var serDiffTime = _terraformingDtoCalculator.SerDiff();
+
+            _resultText.text = $"Result: Fill init dto {fillInitializeTime}ms.; Fill different dto {fillDifferentTime}ms.;\nSerDiff {serDiffTime.Item1}ms. {serDiffTime.Item2} bytes";
         }
     }
 }
