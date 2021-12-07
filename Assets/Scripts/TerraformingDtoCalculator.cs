@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Common.Utils.Serialization;
+using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
 namespace TerraformingDtoCalculator
@@ -60,7 +61,7 @@ namespace TerraformingDtoCalculator
 
                 chunkDto.Generation = 1;
                 
-                _initialFromServerDto.ChankDtos.Add(chunkDto);
+                _initialFromServerDto.ChankDtos[i] = chunkDto;
             }
             
             stopwatch.Stop();
@@ -90,7 +91,7 @@ namespace TerraformingDtoCalculator
             {
                 if (!_fromInitialChunkIds.Contains(i))
                 {
-                    _differentFromServerDto.ChankDtos.Add(_initialFromServerDto.ChankDtos[i]);
+                    _differentFromServerDto.ChankDtos[i] = _initialFromServerDto.ChankDtos[i];
                     continue;
                 }
                 
@@ -123,7 +124,7 @@ namespace TerraformingDtoCalculator
                 
                 chunkDto.Generation = 2;
                 
-                _differentFromServerDto.ChankDtos.Add(chunkDto);
+                _differentFromServerDto.ChankDtos[i] = chunkDto;
             }
             
             stopwatch.Stop();
@@ -140,7 +141,11 @@ namespace TerraformingDtoCalculator
             var serStopwatch = new Stopwatch();
             serStopwatch.Start();
             
+            Profiler.BeginSample("SerDiff");
+            
             _differentFromServerDto.SerDiff(clientSerPacker, _initialFromServerDto);
+            
+            Profiler.EndSample();
             
             serStopwatch.Stop();
             
@@ -154,8 +159,12 @@ namespace TerraformingDtoCalculator
             var deserStopWatch = new Stopwatch();
             deserStopWatch.Start();
 
+            Profiler.BeginSample("DeserDiff");
+            
             var deseredDto = new FromServerDto();
             deseredDto.DeserDiff(clientDeserPacker, _initialFromServerDto);
+            
+            Profiler.EndSample();
             
             deserStopWatch.Stop();
 
