@@ -425,7 +425,7 @@ MonoBehaviour:
   _verticesMaxCount: 1331
   _indicesMaxCount: 5000
   _vertListMaxCount: 5000
-  _generateDiffChunksPercents: 0
+  _generateDiffChunksPercents: 0.0025
 --- !u!4 &710819854
 Transform:
   m_ObjectHideFlags: 0

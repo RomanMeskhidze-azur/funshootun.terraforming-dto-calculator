@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using Common.Utils.Serialization;
+using UnityEngine.Profiling;
 
 namespace TerraformingDtoCalculator
 {
@@ -8,6 +10,11 @@ namespace TerraformingDtoCalculator
     {
         public Byte Generation;
         public System.Collections.Generic.List<Int16> Vertices = new System.Collections.Generic.List<Int16>(TerraformingDtoCalculatorConstants.VerticesMaxCount);
+
+        public ChunkDTO()
+        {
+            Vertices.AddRange(Enumerable.Repeat(new Int16(), TerraformingDtoCalculatorConstants.VerticesMaxCount));
+        }
 
         public int VerticesCount
         {
@@ -251,11 +258,12 @@ namespace TerraformingDtoCalculator
         {
             var other = data;
             packer.WriteByte(Generation, 8);
-            packer.WriteInt(VerticesCount, 11);
-            var VerticesCountEqual = VerticesCount == other.VerticesCount;
-            packer.WriteBool(VerticesCountEqual);
-            if (VerticesCountEqual)
-            {
+            //packer.WriteInt(VerticesCount, 11);
+            //var VerticesCountEqual = VerticesCount == other.VerticesCount;
+            //packer.WriteBool(VerticesCountEqual);
+            //if (VerticesCountEqual)
+            //{
+            Profiler.BeginSample("IterateVertices");
                 for (int i = 0; i < VerticesCount; i++)
                 {
                     packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
@@ -264,26 +272,28 @@ namespace TerraformingDtoCalculator
                         packer.WriteShort(this[new VerticesIndexer(i)], 14);
                     }
                 }
-            }
-            else
-            {
-                var countToDiff = VerticesCount < other.VerticesCount ? VerticesCount : other.VerticesCount;
-                packer.WriteInt(countToDiff, 11);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
-                    if (this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)])
-                    {
-                        packer.WriteShort(this[new VerticesIndexer(i)], 14);
-                    }
-                }
+                Profiler.EndSample();
+            // }
+            // else
+            // {
+            //     var countToDiff = VerticesCount < other.VerticesCount ? VerticesCount : other.VerticesCount;
+            //     packer.WriteInt(countToDiff, 11);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         packer.WriteBool(this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)]);
+            //         if (this[new VerticesIndexer(i)] != other[new VerticesIndexer(i)])
+            //         {
+            //             packer.WriteShort(this[new VerticesIndexer(i)], 14);
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VerticesCount; i++)
+            //     {
+            //         packer.WriteShort(this[new VerticesIndexer(i)], 14);
+            //     }
+            // }
 
-                for (int i = countToDiff; i < VerticesCount; i++)
-                {
-                    packer.WriteShort(this[new VerticesIndexer(i)], 14);
-                }
-            }
-
+            Profiler.BeginSample("IterateIndices");
             packer.WriteInt(IndicesCount, 13);
             var IndicesCountEqual = IndicesCount == other.IndicesCount;
             packer.WriteBool(IndicesCountEqual);
@@ -316,7 +326,9 @@ namespace TerraformingDtoCalculator
                     packer.WriteInt(this[new IndicesIndexer(i)], 13);
                 }
             }
+            Profiler.EndSample();
 
+            Profiler.BeginSample("IterateVertListX");
             packer.WriteInt(VertListXCount, 13);
             var VertListXCountEqual = VertListXCount == other.VertListXCount;
             packer.WriteBool(VertListXCountEqual);
@@ -349,7 +361,9 @@ namespace TerraformingDtoCalculator
                     packer.WriteByte(this[new VertListXIndexer(i)], 8);
                 }
             }
+            Profiler.EndSample();
 
+            Profiler.BeginSample("IterateVertListY");
             packer.WriteInt(VertListYCount, 13);
             var VertListYCountEqual = VertListYCount == other.VertListYCount;
             packer.WriteBool(VertListYCountEqual);
@@ -382,7 +396,9 @@ namespace TerraformingDtoCalculator
                     packer.WriteByte(this[new VertListYIndexer(i)], 8);
                 }
             }
+            Profiler.EndSample();
 
+            Profiler.BeginSample("IterateVertListZ");
             packer.WriteInt(VertListZCount, 13);
             var VertListZCountEqual = VertListZCount == other.VertListZCount;
             packer.WriteBool(VertListZCountEqual);
@@ -415,16 +431,17 @@ namespace TerraformingDtoCalculator
                     packer.WriteByte(this[new VertListZIndexer(i)], 8);
                 }
             }
+            Profiler.EndSample();
         }
 
         public virtual void DeserDiff(ISerializer packer, ChunkDTO data)
         {
             var other = data;
             Generation = packer.ReadByte(8);
-            VerticesCount = packer.ReadInt(11);
-            var VerticesCountEqual = packer.ReadBool();
-            if (VerticesCountEqual)
-            {
+            //VerticesCount = packer.ReadInt(11);
+            //var VerticesCountEqual = packer.ReadBool();
+            //if (VerticesCountEqual)
+            //{
                 for (int i = 0; i < VerticesCount; i++)
                 {
                     if (packer.ReadBool())
@@ -436,28 +453,28 @@ namespace TerraformingDtoCalculator
                         this[new VerticesIndexer(i)] = other[new VerticesIndexer(i)];
                     }
                 }
-            }
-            else
-            {
-                int countToDiff;
-                countToDiff = packer.ReadInt(11);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VerticesIndexer(i)] = packer.ReadShort(14);
-                    }
-                    else
-                    {
-                        this[new VerticesIndexer(i)] = other[new VerticesIndexer(i)];
-                    }
-                }
-
-                for (int i = countToDiff; i < VerticesCount; i++)
-                {
-                    this[new VerticesIndexer(i)] = packer.ReadShort(14);
-                }
-            }
+            // }
+            // else
+            // {
+            //     int countToDiff;
+            //     countToDiff = packer.ReadInt(11);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VerticesIndexer(i)] = packer.ReadShort(14);
+            //         }
+            //         else
+            //         {
+            //             this[new VerticesIndexer(i)] = other[new VerticesIndexer(i)];
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VerticesCount; i++)
+            //     {
+            //         this[new VerticesIndexer(i)] = packer.ReadShort(14);
+            //     }
+            // }
 
             IndicesCount = packer.ReadInt(13);
             var IndicesCountEqual = packer.ReadBool();

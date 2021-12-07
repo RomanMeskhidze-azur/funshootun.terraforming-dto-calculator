@@ -36,7 +36,7 @@ namespace TerraformingDtoCalculator
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
-                    chunkDto.Vertices.Add(0);
+                    chunkDto.Vertices[j] = 0;
                 }
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)
@@ -99,7 +99,7 @@ namespace TerraformingDtoCalculator
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
-                    chunkDto.Vertices.Add(1);
+                    chunkDto.Vertices[j] = 1;
                 }
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)

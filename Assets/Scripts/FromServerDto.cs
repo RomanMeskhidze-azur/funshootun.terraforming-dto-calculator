@@ -88,6 +88,7 @@ namespace TerraformingDtoCalculator
             //packer.WriteInt(ChankDtosCount, 13);
             //var ChankDtosCountEqual = ChankDtosCount == other.ChankDtosCount;
             //packer.WriteBool(ChankDtosCountEqual);
+            Profiler.BeginSample("IterateChunksCollection");
             //if (ChankDtosCountEqual)
             //{
                 for (int i = 0; i < ChankDtosCount; i++)
@@ -95,13 +96,16 @@ namespace TerraformingDtoCalculator
                     //packer.WriteBool(this[new ChankDtosIndexer(i)] != null);
                     //if (this[new ChankDtosIndexer(i)] != null)
                     //{
-                        packer.WriteBool(!this[new ChankDtosIndexer(i)].IsEqual(other[new ChankDtosIndexer(i)]));
-                        if (!this[new ChankDtosIndexer(i)].IsEqual(other[new ChankDtosIndexer(i)]))
+                    var isNotEqual = !this[new ChankDtosIndexer(i)].IsEqual(other[new ChankDtosIndexer(i)]);
+                        packer.WriteBool(isNotEqual);
+                        if (isNotEqual)
                         {
                             //packer.WriteBool(other[new ChankDtosIndexer(i)] != null);
                             //if (other[new ChankDtosIndexer(i)] != null)
                             //{
-                                this[new ChankDtosIndexer(i)].SerDiff(packer, other[new ChankDtosIndexer(i)]);
+                            Profiler.BeginSample("SerDiffConcreteChunk");
+                            this[new ChankDtosIndexer(i)].SerDiff(packer, other[new ChankDtosIndexer(i)]);
+                            Profiler.EndSample();
                             // }
                             // else
                             // {
@@ -141,6 +145,7 @@ namespace TerraformingDtoCalculator
             //         this[new ChankDtosIndexer(i)].Ser(packer);
             //     }
             // }
+            Profiler.EndSample();
         }
 
         public void DeserDiff(ISerializer packer, FromServerDto other)
