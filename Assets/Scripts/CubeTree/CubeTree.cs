@@ -52,9 +52,10 @@ namespace TerraformingDtoCalculator.QuadTree
             var x = _cube.X;
             var y = _cube.Y;
             var z = _cube.Z;
-            var width = _cube.HalfWidth;
-            var height = _cube.HalfHeight;
-            var depth = _cube.HalfDepth;
+            
+            var width = _cube.Width / 2;
+            var height = _cube.Height / 2;
+            var depth = _cube.Depth / 2;
 
             var newRectUpLeftFront = new Cube(x - width, y + height, z + depth, width, height, depth);
             var newRectUpRightFront = new Cube(x + width, y + height, z + depth, width, height, depth);

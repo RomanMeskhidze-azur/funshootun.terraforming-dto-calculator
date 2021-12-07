@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Common.Utils.Serialization;
+using TerraformingDtoCalculator.QuadTree;
 using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
@@ -10,22 +11,36 @@ namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
+        private const int MaxX = 15;
+        private const int MaxY = 19;
+        private const int MaxZ = 19;
+        
         private const int OutputBufferSize = 512000;
         
-        private readonly HashSet<int> _fromInitialChunkIds;
+        private readonly HashSet<int> _newChunkIds;
         private FromServerDto _initialFromServerDto;
         private FromServerDto _differentFromServerDto;
         
         private byte[] _genOutputBuf;
 
+        private int _currentX;
+        private int _currentY;
+        private int _currentZ;
+
+        private CubeTree _cubeTree;
+
         public TerraformingDtoCalculator()
         {
-            _fromInitialChunkIds = new HashSet<int>();
+            _newChunkIds = new HashSet<int>();
         }
 
         public long FillInitialFromServerDto()
         {
             _initialFromServerDto = new FromServerDto();
+            
+            _currentX = 0;
+            _currentY = 0;
+            _currentZ = 0;
             
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -60,6 +75,7 @@ namespace TerraformingDtoCalculator
                 }
 
                 chunkDto.Generation = 1;
+                SetNextCoordinates(chunkDto);
                 
                 _initialFromServerDto.ChankDtos[i] = chunkDto;
             }
@@ -70,13 +86,13 @@ namespace TerraformingDtoCalculator
 
         public void GenerateDifferentChunkIds()
         {
-            _fromInitialChunkIds.Clear();
+            _newChunkIds.Clear();
 
             var iterationsCount = (int) (TerraformingDtoCalculatorConstants.ChunksMaxCount * TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents);
             for (var i = 0; i < iterationsCount; i++)
             {
                 var chunkIndex = Random.Range(0, TerraformingDtoCalculatorConstants.ChunksMaxCount + 1);
-                _fromInitialChunkIds.Add(chunkIndex);
+                _newChunkIds.Add(chunkIndex);
             }
         }
 
@@ -84,19 +100,27 @@ namespace TerraformingDtoCalculator
         {
             _differentFromServerDto = new FromServerDto();
             
+            var cube = new Cube(8, 10, 10, 16, 20, 20);
+            _cubeTree = new CubeTree(cube, TerraformingDtoCalculatorConstants.QuadTreeCapacity);
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             for (var i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
             {
-                if (!_fromInitialChunkIds.Contains(i))
+                if (!_newChunkIds.Contains(i))
                 {
                     _differentFromServerDto.ChankDtos[i] = _initialFromServerDto.ChankDtos[i];
                     continue;
                 }
-                
-                var chunkDto = new ChunkDTO();
 
+                var chunkDto = new ChunkDTO
+                {
+                    X = _initialFromServerDto.ChankDtos[i].X,
+                    Y = _initialFromServerDto.ChankDtos[i].Y,
+                    Z = _initialFromServerDto.ChankDtos[i].Z
+                };
+                
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
                     chunkDto.Vertices[j] = 1;
@@ -125,6 +149,7 @@ namespace TerraformingDtoCalculator
                 chunkDto.Generation = 2;
                 
                 _differentFromServerDto.ChankDtos[i] = chunkDto;
+                _cubeTree.InsertNode(chunkDto);
             }
             
             stopwatch.Stop();
@@ -169,6 +194,31 @@ namespace TerraformingDtoCalculator
             deserStopWatch.Stop();
 
             return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
+        }
+
+        private void SetNextCoordinates(ChunkDTO chunk)
+        {
+            chunk.X = _currentX;
+            chunk.Y = _currentY;
+            chunk.Z = _currentZ;
+            
+            if (_currentZ != MaxZ)
+            {
+                _currentZ++;
+                return;
+            }
+
+            _currentZ = 0;
+
+            if (_currentY != MaxY)
+            {
+                _currentY++;
+                return;
+            }
+
+            _currentY = 0;
+            
+            _currentX++;
         }
     }
 }
