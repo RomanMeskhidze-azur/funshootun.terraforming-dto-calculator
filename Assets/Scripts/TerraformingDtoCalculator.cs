@@ -10,7 +10,7 @@ namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
-        private const int OutputBufferSize = 2048000;
+        private const int OutputBufferSize = 512000;
         
         private readonly HashSet<int> _fromInitialChunkIds;
         private FromServerDto _initialFromServerDto;
