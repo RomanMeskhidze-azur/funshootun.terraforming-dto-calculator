@@ -2,14 +2,15 @@
 
 namespace TerraformingDtoCalculator.OcTree
 {
-    public class OcTree
+    public class OcTree<T> where T : IOcTreeNode
     {
-        private readonly Octangle _octangle;
-        private readonly OcTree[] _childs = new OcTree[8];
+        private readonly Octangle<T> _octangle;
+        private readonly OcTree<T>[] _childs = new OcTree<T>[8];
         
-        private IOcTreeNode _treeNode;
+        private T _newTreeNode;
+        private T _oldTreeNode;
 
-        public OcTree(Octangle octangle)
+        public OcTree(Octangle<T> octangle)
         {
             _octangle = octangle;
         }
@@ -31,19 +32,20 @@ namespace TerraformingDtoCalculator.OcTree
             }
         }
 
-        public bool InsertNode(IOcTreeNode node)
+        public bool InsertNode(T newNode, T oldNode)
         {
             if (_octangle.Width != 1)
             {
-                return TryInsertToSubTree(node);
+                return TryInsertToSubTree(newNode, oldNode);
             }
 
-            if (!_octangle.Contains(node))
+            if (!_octangle.Contains(newNode))
             {
                 return false;
             }
 
-            _treeNode = node;
+            _newTreeNode = newNode;
+            _oldTreeNode = oldNode;
             return true;
         }
         
@@ -57,29 +59,29 @@ namespace TerraformingDtoCalculator.OcTree
             var height = _octangle.Height;
             var depth = _octangle.Depth;
 
-            var newRectUpLeftFront = new Octangle(OctangleType.LeftUpFront, x - width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
-            var newRectUpRightFront = new Octangle(OctangleType.RightUpFront,x + width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
-            var newRectDownLeftFront = new Octangle(OctangleType.LeftDownFront,x - width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
-            var newRectDownRightFront = new Octangle(OctangleType.RightDownFront,x + width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
-            var newRectUpLeftBack = new Octangle(OctangleType.LeftUpBack,x - width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
-            var newRectUpRightBack = new Octangle(OctangleType.RightUpBack,x + width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
-            var newRectDownLeftBack = new Octangle(OctangleType.LeftDownBack,x - width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
-            var newRectDownRightBack = new Octangle(OctangleType.RightDownBack,x + width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpLeftFront = new Octangle<T>(OctangleType.LeftUpFront, x - width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpRightFront = new Octangle<T>(OctangleType.RightUpFront,x + width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownLeftFront = new Octangle<T>(OctangleType.LeftDownFront,x - width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownRightFront = new Octangle<T>(OctangleType.RightDownFront,x + width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpLeftBack = new Octangle<T>(OctangleType.LeftUpBack,x - width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpRightBack = new Octangle<T>(OctangleType.RightUpBack,x + width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownLeftBack = new Octangle<T>(OctangleType.LeftDownBack,x - width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownRightBack = new Octangle<T>(OctangleType.RightDownBack,x + width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
 
-            _childs[0] = new OcTree(newRectUpLeftFront);
-            _childs[1] = new OcTree(newRectUpRightFront);
-            _childs[2] = new OcTree(newRectDownLeftFront);
-            _childs[3] = new OcTree(newRectDownRightFront);
-            _childs[4] = new OcTree(newRectUpLeftBack);
-            _childs[5] = new OcTree(newRectUpRightBack);
-            _childs[6] = new OcTree(newRectDownLeftBack);
-            _childs[7] = new OcTree(newRectDownRightBack);
+            _childs[0] = new OcTree<T>(newRectUpLeftFront);
+            _childs[1] = new OcTree<T>(newRectUpRightFront);
+            _childs[2] = new OcTree<T>(newRectDownLeftFront);
+            _childs[3] = new OcTree<T>(newRectDownRightFront);
+            _childs[4] = new OcTree<T>(newRectUpLeftBack);
+            _childs[5] = new OcTree<T>(newRectUpRightBack);
+            _childs[6] = new OcTree<T>(newRectDownLeftBack);
+            _childs[7] = new OcTree<T>(newRectDownRightBack);
         }
         
-        private bool TryInsertToSubTree(IOcTreeNode node)
+        private bool TryInsertToSubTree(T newNode, T oldNode)
         {
             var i = 0;
-            while (!_childs[i].InsertNode(node))
+            while (!_childs[i].InsertNode(newNode, oldNode))
             {
                 i++;
                 if (i == _childs.Length)

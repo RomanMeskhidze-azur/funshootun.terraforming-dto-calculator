@@ -1,6 +1,6 @@
 ﻿namespace TerraformingDtoCalculator.OcTree
 {
-    public class Octangle
+    public class Octangle<T> where T : IOcTreeNode
     {
         private OctangleType Type { get; }
         public int X { get; private set; }
@@ -24,7 +24,7 @@
             Depth = depth;
         }
 
-        public bool Contains(IOcTreeNode node)
+        public bool Contains(T node)
         {
             return node.X + 1 == X &&
                    node.Y + 1 == Y &&

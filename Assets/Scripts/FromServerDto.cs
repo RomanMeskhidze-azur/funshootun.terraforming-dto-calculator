@@ -5,7 +5,7 @@ using UnityEngine.Profiling;
 
 namespace TerraformingDtoCalculator
 {
-    public class FromServerDto
+    public partial class FromServerDto
     {
         public List<ChunkDTO> ChankDtos = new List<ChunkDTO>(TerraformingDtoCalculatorConstants.ChunksMaxCount);
 

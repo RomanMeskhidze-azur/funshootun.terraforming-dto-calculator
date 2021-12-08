@@ -27,7 +27,7 @@ namespace TerraformingDtoCalculator
         private int _currentY;
         private int _currentZ;
 
-        private OcTree.OcTree _ocTree;
+        private OcTree<ChunkDTO> _ocTree;
 
         public TerraformingDtoCalculator()
         {
@@ -100,8 +100,8 @@ namespace TerraformingDtoCalculator
         {
             _differentFromServerDto = new FromServerDto();
             
-            var cube = new Octangle(OctangleType.Root, 8, 8, 8, 16, 16, 16);
-            _ocTree = new OcTree.OcTree(cube);
+            var cube = new Octangle<ChunkDTO>(OctangleType.Root, 8, 8, 8, 16, 16, 16);
+            _ocTree = new OcTree<ChunkDTO>(cube);
             _ocTree.Initialization(4);
 
             var stopwatch = new Stopwatch();
@@ -150,7 +150,7 @@ namespace TerraformingDtoCalculator
                 chunkDto.Generation = 2;
                 
                 _differentFromServerDto.ChankDtos[i] = chunkDto;
-                _ocTree.InsertNode(chunkDto);
+                _ocTree.InsertNode(chunkDto, _initialFromServerDto.ChankDtos[i]);
             }
             
             stopwatch.Stop();
