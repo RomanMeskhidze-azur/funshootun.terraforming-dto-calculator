@@ -53,18 +53,18 @@ namespace TerraformingDtoCalculator.QuadTree
             var y = _cube.Y;
             var z = _cube.Z;
             
-            var width = _cube.Width / 2;
-            var height = _cube.Height / 2;
-            var depth = _cube.Depth / 2;
+            var width = _cube.Width;
+            var height = _cube.Height;
+            var depth = _cube.Depth;
 
-            var newRectUpLeftFront = new Cube(x - width, y + height, z + depth, width, height, depth);
-            var newRectUpRightFront = new Cube(x + width, y + height, z + depth, width, height, depth);
-            var newRectDownLeftFront = new Cube(x - width, y - height, z + depth, width, height, depth);
-            var newRectDownRightFront = new Cube(x + width, y - height, z + depth, width, height, depth);
-            var newRectUpLeftBack = new Cube(x - width, y + height, z - depth, width, height, depth);
-            var newRectUpRightBack = new Cube(x + width, y + height, z - depth, width, height, depth);
-            var newRectDownLeftBack = new Cube(x - width, y - height, z - depth, width, height, depth);
-            var newRectDownRightBack = new Cube(x + width, y - height, z - depth, width, height, depth);
+            var newRectUpLeftFront = new Cube(x - width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpRightFront = new Cube(x + width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownLeftFront = new Cube(x - width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownRightFront = new Cube(x + width / 4, y - height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpLeftBack = new Cube(x - width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectUpRightBack = new Cube(x + width / 4, y + height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownLeftBack = new Cube(x - width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
+            var newRectDownRightBack = new Cube(x + width / 4, y - height / 4, z - depth / 4, width / 2, height / 2, depth / 2);
 
             _upLeftFrontTree = new CubeTree(newRectUpLeftFront, TerraformingDtoCalculatorConstants.QuadTreeCapacity);
             _upRightFrontTree = new CubeTree(newRectUpRightFront, TerraformingDtoCalculatorConstants.QuadTreeCapacity);
