@@ -421,10 +421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c08939be3394973b1e49f1a86d5d96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunksMaxCount: 6400
+  _chunksMaxCount: 4096
   _verticesMaxCount: 1331
   _indicesMaxCount: 5000
   _vertListMaxCount: 5000
+  _quadTreeCapacity: 4
   _generateDiffChunksPercents: 0.0025
 --- !u!4 &710819854
 Transform:

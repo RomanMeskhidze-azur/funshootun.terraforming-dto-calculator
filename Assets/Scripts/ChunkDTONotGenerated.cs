@@ -1,9 +1,9 @@
 ﻿using System;
-using TerraformingDtoCalculator.QuadTree;
+using TerraformingDtoCalculator.OcTree;
 
 namespace TerraformingDtoCalculator
 {
-    public partial class ChunkDTO : ICubeTreeNode
+    public partial class ChunkDTO : IOcTreeNode
     {
         public int X { get; set; }
         public int Y { get; set; }

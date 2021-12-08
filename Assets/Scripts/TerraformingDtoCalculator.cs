@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Common.Utils.Serialization;
-using TerraformingDtoCalculator.QuadTree;
+using TerraformingDtoCalculator.OcTree;
 using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
 
@@ -12,8 +12,8 @@ namespace TerraformingDtoCalculator
     public class TerraformingDtoCalculator
     {
         private const int MaxX = 15;
-        private const int MaxY = 19;
-        private const int MaxZ = 19;
+        private const int MaxY = 15;
+        private const int MaxZ = 15;
         
         private const int OutputBufferSize = 512000;
         
@@ -27,7 +27,7 @@ namespace TerraformingDtoCalculator
         private int _currentY;
         private int _currentZ;
 
-        private CubeTree _cubeTree;
+        private OcTree.OcTree _ocTree;
 
         public TerraformingDtoCalculator()
         {
@@ -100,8 +100,9 @@ namespace TerraformingDtoCalculator
         {
             _differentFromServerDto = new FromServerDto();
             
-            var cube = new Cube(8, 10, 10, 16, 20, 20);
-            _cubeTree = new CubeTree(cube, TerraformingDtoCalculatorConstants.QuadTreeCapacity);
+            var cube = new Octangle(OctangleType.Root, 8, 8, 8, 16, 16, 16);
+            _ocTree = new OcTree.OcTree(cube);
+            _ocTree.Initialization(4);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -149,7 +150,7 @@ namespace TerraformingDtoCalculator
                 chunkDto.Generation = 2;
                 
                 _differentFromServerDto.ChankDtos[i] = chunkDto;
-                _cubeTree.InsertNode(chunkDto);
+                _ocTree.InsertNode(chunkDto);
             }
             
             stopwatch.Stop();
