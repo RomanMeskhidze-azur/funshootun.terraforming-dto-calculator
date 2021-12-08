@@ -52,9 +52,9 @@ namespace TerraformingDtoCalculator.OcTree
             var y = _octangle.Y;
             var z = _octangle.Z;
             
-            var width = _octangle.Width / 2;
-            var height = _octangle.Height / 2;
-            var depth = _octangle.Depth / 2;
+            var width = _octangle.Width;
+            var height = _octangle.Height;
+            var depth = _octangle.Depth;
 
             var newRectUpLeftFront = new Octangle(OctangleType.LeftUpFront, x - width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
             var newRectUpRightFront = new Octangle(OctangleType.RightUpFront,x + width / 4, y + height / 4, z + depth / 4, width / 2, height / 2, depth / 2);
