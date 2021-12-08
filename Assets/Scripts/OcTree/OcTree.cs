@@ -18,6 +18,7 @@ namespace TerraformingDtoCalculator.OcTree
         {
             if (powerOfTwo == 0)
             {
+                _octangle.CorrectPosition();
                 return;
             }
 
@@ -29,7 +30,7 @@ namespace TerraformingDtoCalculator.OcTree
                 _childs[i].Initialization(previousPowerOfTwo);
             }
         }
-        
+
         public bool InsertNode(IOcTreeNode node)
         {
             if (_octangle.Width != 1)
