@@ -188,8 +188,10 @@ namespace TerraformingDtoCalculator
                         {
                             //if (other[new ChankDtosIndexer(i)] != null)
                             //{
+                            
+                            // ТУТ ДОЛЖНО БЫТЬ ЧАНКОХРАНИЛИЩЕ
                                 Profiler.BeginSample("CopyLink");
-                                other[new ChankDtosIndexer(i)] = this[new ChankDtosIndexer(i)];
+                                this[new ChankDtosIndexer(i)] = other[new ChankDtosIndexer(i)];
                                 Profiler.EndSample();
                             // }
                             // else

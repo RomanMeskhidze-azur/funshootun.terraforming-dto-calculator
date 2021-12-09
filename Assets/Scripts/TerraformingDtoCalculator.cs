@@ -6,6 +6,7 @@ using Common.Utils.Serialization;
 using TerraformingDtoCalculator.OcTree;
 using UnityEngine.Profiling;
 using Random = UnityEngine.Random;
+using Debug = UnityEngine.Debug;
 
 namespace TerraformingDtoCalculator
 {
@@ -20,8 +21,6 @@ namespace TerraformingDtoCalculator
         private readonly HashSet<int> _newChunkIds;
         private FromServerDto _initialFromServerDto;
         private FromServerDto _differentFromServerDto;
-        
-        private byte[] _genOutputBuf;
 
         private int _currentX;
         private int _currentY;
@@ -88,7 +87,7 @@ namespace TerraformingDtoCalculator
         {
             _newChunkIds.Clear();
 
-            var iterationsCount = (int) (TerraformingDtoCalculatorConstants.ChunksMaxCount * TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents);
+            var iterationsCount = TerraformingDtoCalculatorConstants.GenerateDiffChunksCount;
             for (var i = 0; i < iterationsCount; i++)
             {
                 var chunkIndex = Random.Range(0, TerraformingDtoCalculatorConstants.ChunksMaxCount + 1);
@@ -160,8 +159,8 @@ namespace TerraformingDtoCalculator
         public (long, long, long) SerDeserDiff()
         {
             var clientSerPacker = new StrictBitsPacker(new byte[8]);
-            _genOutputBuf = new byte[OutputBufferSize];
-            var ms = new MemoryStream(_genOutputBuf, 0, _genOutputBuf.Length, true, true);
+            var genOutputBuf = new byte[OutputBufferSize];
+            var ms = new MemoryStream(genOutputBuf, 0, genOutputBuf.Length, true, true);
             clientSerPacker.SetStream(ms);
             
             var serStopwatch = new Stopwatch();
@@ -174,9 +173,9 @@ namespace TerraformingDtoCalculator
             Profiler.EndSample();
             
             serStopwatch.Stop();
-            
+
             clientSerPacker.Flush();
-            var generatedArray = new ArraySegment<byte>(_genOutputBuf, 0, (int) ms.Position);
+            var generatedArray = new ArraySegment<byte>(genOutputBuf, 0, (int) ms.Position);
             
             var clientDeserPacker = new StrictBitsPacker(new byte[8]);
             var stream = new MemoryStream(generatedArray.Array, generatedArray.Offset, generatedArray.Count);
@@ -193,6 +192,50 @@ namespace TerraformingDtoCalculator
             Profiler.EndSample();
             
             deserStopWatch.Stop();
+            
+            Debug.Log($"ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
+
+            return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
+        }
+
+        public (long, long, long) NotGeneratedSerDeserDiff()
+        {
+            var clientSerPacker = new StrictBitsPacker(new byte[8]);
+            var genOutputBuf = new byte[OutputBufferSize];
+            var ms = new MemoryStream(genOutputBuf, 0, genOutputBuf.Length, true, true);
+            clientSerPacker.SetStream(ms);
+            
+            var serStopwatch = new Stopwatch();
+            serStopwatch.Start();
+            
+            Profiler.BeginSample("NotGeneratedSerDiff");
+            
+            _differentFromServerDto.NotGeneratedSerDiff(clientSerPacker, _ocTree);
+            
+            Profiler.EndSample();
+            
+            serStopwatch.Stop();
+            
+            clientSerPacker.Flush();
+            var generatedArray = new ArraySegment<byte>(genOutputBuf, 0, (int) ms.Position);
+            
+            var clientDeserPacker = new StrictBitsPacker(new byte[8]);
+            var stream = new MemoryStream(generatedArray.Array, generatedArray.Offset, generatedArray.Count);
+            clientDeserPacker.SetStream(stream);
+            
+            var deserStopWatch = new Stopwatch();
+            deserStopWatch.Start();
+
+            Profiler.BeginSample("NotGeneratedDeserDiff");
+            
+            var deseredDto = new FromServerDto();
+            deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
+            
+            Profiler.EndSample();
+            
+            deserStopWatch.Stop();
+            
+            Debug.Log($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
 
             return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
         }

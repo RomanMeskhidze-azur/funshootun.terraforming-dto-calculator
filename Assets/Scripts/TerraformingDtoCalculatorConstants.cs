@@ -9,14 +9,14 @@ namespace TerraformingDtoCalculator
         [SerializeField] private int _indicesMaxCount = 5000;
         [SerializeField] private int _vertListMaxCount = 1331;
         [SerializeField] private int _quadTreeCapacity = 4;
-        [SerializeField, Range(0, 1)] private float _generateDiffChunksPercents;
+        [SerializeField] private int _generateDiffChunksCount;
 
         public static int ChunksMaxCount;
         public static int VerticesMaxCount;
         public static int IndicesMaxCount;
         public static int VertListMaxCount;
         public static int QuadTreeCapacity;
-        public static float GenerateDiffChunksPercents;
+        public static int GenerateDiffChunksCount;
 
         private void Awake()
         {
@@ -25,7 +25,7 @@ namespace TerraformingDtoCalculator
             IndicesMaxCount = _indicesMaxCount;
             VertListMaxCount = _vertListMaxCount;
             QuadTreeCapacity = _quadTreeCapacity;
-            GenerateDiffChunksPercents = _generateDiffChunksPercents;
+            GenerateDiffChunksCount = _generateDiffChunksCount;
         }
     }
 }

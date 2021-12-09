@@ -9,6 +9,12 @@ namespace TerraformingDtoCalculator.OcTree
         
         private T _newTreeNode;
         private T _oldTreeNode;
+        
+        public bool IsBusy { get; private set; }
+
+        public OcTree<T>[] Childs => _childs;
+        public T NewTreeNode => _newTreeNode;
+        public T OldTreeNode => _oldTreeNode;
 
         public OcTree(Octangle<T> octangle)
         {
@@ -36,7 +42,8 @@ namespace TerraformingDtoCalculator.OcTree
         {
             if (_octangle.Width != 1)
             {
-                return TryInsertToSubTree(newNode, oldNode);
+                IsBusy = TryInsertToSubTree(newNode, oldNode);
+                return IsBusy;
             }
 
             if (!_octangle.Contains(newNode))
@@ -46,6 +53,7 @@ namespace TerraformingDtoCalculator.OcTree
 
             _newTreeNode = newNode;
             _oldTreeNode = oldNode;
+            IsBusy = true;
             return true;
         }
         

@@ -24,7 +24,7 @@ namespace TerraformingDtoCalculator
             _verticesCountText.text = $"Vertices per chunk count: {TerraformingDtoCalculatorConstants.VerticesMaxCount}";
             _indicesCountText.text = $"Indices per chunk count: {TerraformingDtoCalculatorConstants.IndicesMaxCount}";
             _vertListCountText.text = $"VertList per chunk count: {TerraformingDtoCalculatorConstants.VertListMaxCount}";
-            _generateDiffChunksPercentsText.text = $"Generate diff chunk count: {(int) (TerraformingDtoCalculatorConstants.ChunksMaxCount * TerraformingDtoCalculatorConstants.GenerateDiffChunksPercents)}";
+            _generateDiffChunksPercentsText.text = $"Generate diff chunk count: {TerraformingDtoCalculatorConstants.GenerateDiffChunksCount}";
             _resultText.text = "Result: ";
             
             _runTestButton.onClick.AddListener(RunTests);
@@ -47,7 +47,9 @@ namespace TerraformingDtoCalculator
 
             var serDiffTime = _terraformingDtoCalculator.SerDeserDiff();
 
-            _resultText.text = $"Result: Fill init dto {fillInitializeTime}ms.; Fill different dto {fillDifferentTime}ms.\nSerDiff {serDiffTime.Item1}ms. {serDiffTime.Item2} bytes\nDeserDiff {serDiffTime.Item3}ms.";
+            var notGeneratedSerDiffTime = _terraformingDtoCalculator.NotGeneratedSerDeserDiff();
+
+            _resultText.text = $"Result: Fill init dto {fillInitializeTime}ms.; Fill different dto {fillDifferentTime}ms.\nSerDiff {serDiffTime.Item1}ms. {serDiffTime.Item2} bytes\nDeserDiff {serDiffTime.Item3}ms.\nNotGeneratedSerDiff {notGeneratedSerDiffTime.Item1}ms. {notGeneratedSerDiffTime.Item2} bytes\nNotGeneratedDeserDiff {notGeneratedSerDiffTime.Item3}ms.";
         }
     }
 }

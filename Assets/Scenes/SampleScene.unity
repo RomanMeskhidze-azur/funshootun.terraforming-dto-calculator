@@ -426,7 +426,7 @@ MonoBehaviour:
   _indicesMaxCount: 5000
   _vertListMaxCount: 5000
   _quadTreeCapacity: 4
-  _generateDiffChunksPercents: 0.0025
+  _generateDiffChunksCount: 1
 --- !u!4 &710819854
 Transform:
   m_ObjectHideFlags: 0
