@@ -17,15 +17,23 @@ namespace TerraformingDtoCalculator
 
             Debug.Log($"sered chunks count {ocTree.CountInsertedNodes}");
             packer.WriteInt(ocTree.CountInsertedNodes, 13);
-            SerializeOcTree(packer, ocTree);
+            var masks = new List<int>();
+            SerializeOcTree(packer, ocTree, masks);
+            Debug.Log($"masks count {masks.Count}");
         }
 
-        private void SerializeOcTree(ISerializer packer, OcTree<ChunkDTO> ocTree)
+        private void SerializeOcTree(ISerializer packer, OcTree<ChunkDTO> ocTree, List<int> masks)
         {
             var childs = ocTree.Childs;
             if (childs[0] == null)
             {
+                foreach (var mask in masks)
+                {
+                    var biteMask = 1 << mask;
+                    packer.WriteInt(biteMask, 8);
+                }
                 ocTree.NewTreeNode.SerDiff(packer, ocTree.OldTreeNode);
+                masks.RemoveAt(masks.Count - 1);
                 return;
             }
             
@@ -38,9 +46,13 @@ namespace TerraformingDtoCalculator
                     continue;
                 }
 
-                var mask = 1 << i;
-                packer.WriteInt(mask, 8);
-                SerializeOcTree(packer, child);
+                masks.Add(i);
+                SerializeOcTree(packer, child, masks);
+            }
+
+            if (masks.Count > 0)
+            {
+                masks.RemoveAt(masks.Count - 1);
             }
         }
         
