@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 
 namespace TerraformingDtoCalculator.OcTree
 {
@@ -6,6 +6,9 @@ namespace TerraformingDtoCalculator.OcTree
     {
         private readonly Octangle<T> _octangle;
         private readonly OcTree<T>[] _childs = new OcTree<T>[8];
+
+        public Vector3Int Position => new Vector3Int(_octangle.X, _octangle.Y, _octangle.Z);
+        public int CountInsertedNodes { get; private set; }
         
         private T _newTreeNode;
         private T _oldTreeNode;
@@ -40,10 +43,19 @@ namespace TerraformingDtoCalculator.OcTree
 
         public bool InsertNode(T newNode, T oldNode)
         {
+            if (_octangle.Type == OctangleType.Root)
+            {
+                CountInsertedNodes++;
+            }
+            
             if (_octangle.Width != 1)
             {
-                IsBusy = TryInsertToSubTree(newNode, oldNode);
-                return IsBusy;
+                var result = TryInsertToSubTree(newNode, oldNode);
+                if (!IsBusy)
+                {
+                    IsBusy = result;
+                }
+                return result;
             }
 
             if (!_octangle.Contains(newNode))
@@ -88,17 +100,17 @@ namespace TerraformingDtoCalculator.OcTree
         
         private bool TryInsertToSubTree(T newNode, T oldNode)
         {
-            var i = 0;
-            while (!_childs[i].InsertNode(newNode, oldNode))
+            for (var i = 0; i < _childs.Length; i++)
             {
-                i++;
-                if (i == _childs.Length)
+                if (!_childs[i].InsertNode(newNode, oldNode))
                 {
-                    return false;
+                    continue;
                 }
+
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

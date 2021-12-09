@@ -2,7 +2,7 @@
 {
     public class Octangle<T> where T : IOcTreeNode
     {
-        private OctangleType Type { get; }
+        public OctangleType Type { get; }
         public int X { get; private set; }
         public int Y { get; private set; }
         public int Z { get; private set; }

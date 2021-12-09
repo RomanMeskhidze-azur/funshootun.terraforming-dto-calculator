@@ -12,11 +12,11 @@ namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
-        private const int MaxX = 15;
-        private const int MaxY = 15;
-        private const int MaxZ = 15;
+        private const int MaxX = 3;
+        private const int MaxY = 3;
+        private const int MaxZ = 3;
         
-        private const int OutputBufferSize = 512000;
+        private const int OutputBufferSize = 2560000;
         
         private readonly HashSet<int> _newChunkIds;
         private FromServerDto _initialFromServerDto;
@@ -99,9 +99,9 @@ namespace TerraformingDtoCalculator
         {
             _differentFromServerDto = new FromServerDto();
             
-            var cube = new Octangle<ChunkDTO>(OctangleType.Root, 8, 8, 8, 16, 16, 16);
+            var cube = new Octangle<ChunkDTO>(OctangleType.Root, 2, 2, 2, 4, 4, 4);
             _ocTree = new OcTree<ChunkDTO>(cube);
-            _ocTree.Initialization(4);
+            _ocTree.Initialization(2);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
