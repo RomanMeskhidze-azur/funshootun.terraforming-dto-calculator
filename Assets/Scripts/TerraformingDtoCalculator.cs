@@ -209,7 +209,7 @@ namespace TerraformingDtoCalculator
 
         public (long, long, long) NotGeneratedSerDeserDiff()
         {
-            var clientSerPacker = new SimpleBitsPacker(new byte[8]);//new StrictBitsPacker(new byte[8]);
+            var clientSerPacker = new StrictBitsPacker(new byte[8]);
             var genOutputBuf = new byte[OutputBufferSize];
             var ms = new MemoryStream(genOutputBuf, 0, genOutputBuf.Length, true, true);
             clientSerPacker.SetStream(ms);
@@ -228,7 +228,7 @@ namespace TerraformingDtoCalculator
             clientSerPacker.Flush();
             var generatedArray = new ArraySegment<byte>(genOutputBuf, 0, (int) ms.Position);
 
-            var clientDeserPacker = new SimpleBitsPacker(new byte[8]);//new StrictBitsPacker(new byte[8]);
+            var clientDeserPacker = new StrictBitsPacker(new byte[8]);
             var stream = new MemoryStream(generatedArray.Array, generatedArray.Offset, generatedArray.Count);
             clientDeserPacker.SetStream(stream);
             
