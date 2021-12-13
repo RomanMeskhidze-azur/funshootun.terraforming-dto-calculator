@@ -99,9 +99,13 @@ namespace TerraformingDtoCalculator
         {
             _differentFromServerDto = new FromServerDto();
             
+            Profiler.BeginSample("Initialize_OcTree");
+            
             var cube = new Octangle<ChunkDTO>(OctangleType.Root, 8, 8, 8, 16, 16, 16);
             _ocTree = new OcTree<ChunkDTO>(cube);
             _ocTree.Initialization(4);
+            
+            Profiler.EndSample();
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -149,7 +153,12 @@ namespace TerraformingDtoCalculator
                 chunkDto.Generation = 2;
                 
                 _differentFromServerDto.ChankDtos[i] = chunkDto;
+                
+                Profiler.BeginSample("FillNode_OcTree");
+                
                 _ocTree.InsertNode(chunkDto, _initialFromServerDto.ChankDtos[i]);
+                
+                Profiler.EndSample();
             }
             
             stopwatch.Stop();
@@ -200,7 +209,7 @@ namespace TerraformingDtoCalculator
 
         public (long, long, long) NotGeneratedSerDeserDiff()
         {
-            var clientSerPacker = new StrictBitsPacker(new byte[8]);
+            var clientSerPacker = new SimpleBitsPacker(new byte[8]);//new StrictBitsPacker(new byte[8]);
             var genOutputBuf = new byte[OutputBufferSize];
             var ms = new MemoryStream(genOutputBuf, 0, genOutputBuf.Length, true, true);
             clientSerPacker.SetStream(ms);
@@ -218,8 +227,8 @@ namespace TerraformingDtoCalculator
             
             clientSerPacker.Flush();
             var generatedArray = new ArraySegment<byte>(genOutputBuf, 0, (int) ms.Position);
-            
-            var clientDeserPacker = new StrictBitsPacker(new byte[8]);
+
+            var clientDeserPacker = new SimpleBitsPacker(new byte[8]);//new StrictBitsPacker(new byte[8]);
             var stream = new MemoryStream(generatedArray.Array, generatedArray.Offset, generatedArray.Count);
             clientDeserPacker.SetStream(stream);
             
