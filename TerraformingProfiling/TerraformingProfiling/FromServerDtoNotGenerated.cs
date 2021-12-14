@@ -6,6 +6,18 @@ namespace TerraformingDtoCalculator
 {
     public partial class FromServerDto
     {
+        public struct ChunkIndexPair
+        {
+            public int Index;
+            public ChunkDTO NewChunk;
+
+            public ChunkIndexPair(int index, ChunkDTO newChunk)
+            {
+                Index = index;
+                NewChunk = newChunk;
+            }
+        }
+        
         public void NotGeneratedSerDiff(ISerializer packer, OcTree<ChunkDTO> ocTree)
         {
             packer.WriteBool(ocTree.IsBusy);
@@ -67,7 +79,7 @@ namespace TerraformingDtoCalculator
                 return;
             }
 
-            var newChunks = new List<ChunkDTO>(20);
+            var newChunks = new List<ChunkIndexPair>(125);
             var countChunks = packer.ReadInt(13);
             
             //Profiler.BeginSample("Deserialize_OcTree");
@@ -82,7 +94,7 @@ namespace TerraformingDtoCalculator
           //  Profiler.EndSample();
         }
 
-        private void DeserializeOcTree(ISerializer packer, OcTree<ChunkDTO> ocTree, FromServerDto other, List<ChunkDTO> newChunks)
+        private void DeserializeOcTree(ISerializer packer, OcTree<ChunkDTO> ocTree, FromServerDto other, List<ChunkIndexPair> newChunks)
         {
             var childs = ocTree.Childs;
             if (childs[0] == null)
@@ -92,7 +104,7 @@ namespace TerraformingDtoCalculator
                 var chunkY = octPosition.Y - 1;
                 var chunkZ = octPosition.Z - 1;
             //    Profiler.BeginSample("FindInDeserOcTree");
-                var prevChunk = other.ChankDtos.Find(x => x.X == chunkX && x.Y == chunkY && x.Z == chunkZ);
+                var prevChunkIndex = other.ChankDtos.FindIndex(x => x.X == chunkX && x.Y == chunkY && x.Z == chunkZ);
              //   Profiler.EndSample();
 
                 var newChunk = new ChunkDTO
@@ -102,9 +114,9 @@ namespace TerraformingDtoCalculator
                     Z = chunkZ
                 };
              //   Profiler.BeginSample("DeserDiff");
-                newChunk.DeserDiff(packer, prevChunk);
+                newChunk.DeserDiff(packer, other.ChankDtos[prevChunkIndex]);
              //   Profiler.EndSample();
-                newChunks.Add(newChunk);
+                newChunks.Add(new ChunkIndexPair(prevChunkIndex, newChunk));
                 
                 return;
             }
@@ -133,7 +145,7 @@ namespace TerraformingDtoCalculator
             return i;
         }
 
-        private void ProcessDeserializedChunks(FromServerDto other, List<ChunkDTO> newChunks)
+        private void ProcessDeserializedChunks(FromServerDto other, List<ChunkIndexPair> newChunks)
         {
             this.ChankDtos = other.ChankDtos;
             
@@ -141,8 +153,7 @@ namespace TerraformingDtoCalculator
             {
                 var chunk = newChunks[i];
 
-                var oldChunk = other.ChankDtos.FindIndex(x => x.X == chunk.X && x.Y == chunk.Y && x.Z == chunk.Z);
-                this.ChankDtos[oldChunk] = chunk;
+                this.ChankDtos[chunk.Index] = chunk.NewChunk;
             }
         }
     }

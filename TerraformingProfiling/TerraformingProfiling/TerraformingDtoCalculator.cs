@@ -9,9 +9,9 @@ namespace TerraformingDtoCalculator
 {
     public class TerraformingDtoCalculator
     {
-        private const int MaxX = 15;
-        private const int MaxY = 15;
-        private const int MaxZ = 15;
+        private const int MaxX = 31;
+        private const int MaxY = 31;
+        private const int MaxZ = 31;
         
         private const int OutputBufferSize = 2560000;
         
@@ -43,7 +43,7 @@ namespace TerraformingDtoCalculator
 
             for (var i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
             {
-                var chunkDto = _initialFromServerDto.ChankDtos[i];
+                var chunkDto = new ChunkDTO();
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
@@ -72,6 +72,8 @@ namespace TerraformingDtoCalculator
 
                 chunkDto.Generation = 1;
                 SetNextCoordinates(chunkDto);
+                
+                _initialFromServerDto.ChankDtos[i] = chunkDto;
             }
             
             stopwatch.Stop();
@@ -97,9 +99,9 @@ namespace TerraformingDtoCalculator
             
            // Profiler.BeginSample("Initialize_OcTree");
             
-            var cube = new Octangle<ChunkDTO>(OctangleType.Root, 8, 8, 8, 16, 16, 16);
+            var cube = new Octangle<ChunkDTO>(OctangleType.Root, 16, 16, 16, 32, 32, 32);
             _ocTree = new OcTree<ChunkDTO>(cube);
-            _ocTree.Initialization(4);
+            _ocTree.Initialization(5);
             
           //  Profiler.EndSample();
 
