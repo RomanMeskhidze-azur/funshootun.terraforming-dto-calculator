@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "TerraformingProfiling/1.0.0": {
+        "dependencies": {
+          "Common.Utils": "1.0.0.0",
+          "ConfigGenerator": "1.0.0.0"
+        },
+        "runtime": {
+          "TerraformingProfiling.dll": {}
+        }
+      },
+      "Common.Utils/1.0.0.0": {
+        "runtime": {
+          "Common.Utils.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "ConfigGenerator/1.0.0.0": {
+        "runtime": {
+          "ConfigGenerator.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TerraformingProfiling/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Common.Utils/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ConfigGenerator/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

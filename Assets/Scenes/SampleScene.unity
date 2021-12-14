@@ -422,11 +422,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunksMaxCount: 4096
-  _verticesMaxCount: 216
-  _indicesMaxCount: 1080
-  _vertListMaxCount: 1080
+  _verticesMaxCount: 1331
+  _indicesMaxCount: 5000
+  _vertListMaxCount: 5000
   _quadTreeCapacity: 4
-  _generateDiffChunksCount: 10
+  _generateDiffChunksCount: 30
 --- !u!4 &710819854
 Transform:
   m_ObjectHideFlags: 0
