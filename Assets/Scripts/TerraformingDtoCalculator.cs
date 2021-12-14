@@ -46,7 +46,7 @@ namespace TerraformingDtoCalculator
 
             for (var i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
             {
-                var chunkDto = new ChunkDTO();
+                var chunkDto = _initialFromServerDto.ChankDtos[i];
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
@@ -75,8 +75,6 @@ namespace TerraformingDtoCalculator
 
                 chunkDto.Generation = 1;
                 SetNextCoordinates(chunkDto);
-                
-                _initialFromServerDto.ChankDtos[i] = chunkDto;
             }
             
             stopwatch.Stop();

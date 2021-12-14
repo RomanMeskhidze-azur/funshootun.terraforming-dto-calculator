@@ -13,7 +13,10 @@ namespace TerraformingDtoCalculator
 
         public ChunkDTO()
         {
-            Vertices.AddRange(Enumerable.Repeat(new Int16(), TerraformingDtoCalculatorConstants.VerticesMaxCount));
+            for (int i = 0; i < TerraformingDtoCalculatorConstants.VerticesMaxCount; i++)
+            {
+                Vertices.Add(new Int16());
+            }
         }
 
         public int VerticesCount
