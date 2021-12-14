@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Rider_Projects\\TerraformingProfiling\\TerraformingProfiling\\TerraformingProfiling.csproj",
+      "projectUniqueName": "C:\\Unity_Projects\\funshootun.terraforming-dto-calculator\\TerraformingProfiling\\TerraformingProfiling\\TerraformingProfiling.csproj",
       "projectName": "TerraformingProfiling",
-      "projectPath": "C:\\Rider_Projects\\TerraformingProfiling\\TerraformingProfiling\\TerraformingProfiling.csproj",
+      "projectPath": "C:\\Unity_Projects\\funshootun.terraforming-dto-calculator\\TerraformingProfiling\\TerraformingProfiling\\TerraformingProfiling.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Rider_Projects\\TerraformingProfiling\\TerraformingProfiling\\obj\\",
+      "outputPath": "C:\\Unity_Projects\\funshootun.terraforming-dto-calculator\\TerraformingProfiling\\TerraformingProfiling\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
