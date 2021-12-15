@@ -1,6 +1,7 @@
 ﻿using System;
 using Common.Utils.Serialization;
 using TerraformingDtoCalculator.OcTree;
+using UnityEngine;
 
 namespace TerraformingDtoCalculator
 {
@@ -54,146 +55,196 @@ namespace TerraformingDtoCalculator
 
             #endregion
 
-            temp = 0;
-            counter = 0;
+            // temp = 0;
+            // counter = 0;
+            //
+            // #region Indices
+            //
+            // packer.WriteInt(IndicesCount, 13);
+            //
+            // var indicesValues = new byte[IndicesCount * 2];
+            // for (var i = 0; i < IndicesCount; i++)
+            // {
+            //     var isNotEqual = this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)];
+            //     var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
+            //     temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
+            //     if (isNotEqual)
+            //     {
+            //         var byteArray = new IntToByte
+            //         {
+            //             val = this[new IndicesIndexer(i)]
+            //         };
+            //         byteArray.ToByteArray(conversionsBuffer, out _);
+            //         
+            //         indicesValues[counter++] = conversionsBuffer[0];
+            //         indicesValues[counter++] = conversionsBuffer[1];
+            //     }
+            //     
+            //     if (i % 8 == 7)
+            //     {
+            //         packer.WriteByte(temp);
+            //         temp = 0;
+            //     }
+            // }
+            //
+            // if ((IndicesCount - 1) % 8 != 7)
+            // {
+            //     packer.WriteByte(temp);
+            // }
+            //
+            // packer.WriteBytes(indicesValues, 0, counter);
+            //
+            // #endregion
+            //
+            // temp = 0;
+            // counter = 0;
+            //
+            // #region VertListX
+            //
+            // packer.WriteInt(VertListXCount, 13);
+            //
+            // var vertListValues = new byte[VertListXCount];
+            // for (var i = 0; i < VertListXCount; i++)
+            // {
+            //     var isNotEqual = this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)];
+            //     var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
+            //     temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
+            //     if (isNotEqual)
+            //     {
+            //         vertListValues[counter++] = this[new VertListXIndexer(i)];
+            //     }
+            //     
+            //     if (i % 8 == 7)
+            //     {
+            //         packer.WriteByte(temp);
+            //         temp = 0;
+            //     }
+            // }
+            //
+            // if ((VertListXCount - 1) % 8 != 7)
+            // {
+            //     packer.WriteByte(temp);
+            // }
+            //
+            // packer.WriteBytes(vertListValues, 0, counter);
+            //
+            // #endregion
+            //
+            // temp = 0;
+            // counter = 0;
+            //
+            // #region VertListY
+            //
+            // packer.WriteInt(VertListYCount, 13);
+            //
+            // for (var i = 0; i < VertListYCount; i++)
+            // {
+            //     var isNotEqual = this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)];
+            //     var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
+            //     temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
+            //     if (isNotEqual)
+            //     {
+            //         vertListValues[counter++] = this[new VertListYIndexer(i)];
+            //     }
+            //     
+            //     if (i % 8 == 7)
+            //     {
+            //         packer.WriteByte(temp);
+            //         temp = 0;
+            //     }
+            // }
+            //
+            // if ((VertListYCount - 1) % 8 != 7)
+            // {
+            //     packer.WriteByte(temp);
+            // }
+            //
+            // packer.WriteBytes(vertListValues, 0, counter);
+            //
+            // #endregion
+            //
+            // temp = 0;
+            // counter = 0;
+            //
+            // #region VertListZ
+            //
+            // packer.WriteInt(VertListZCount, 13);
+            //
+            // for (var i = 0; i < VertListZCount; i++)
+            // {
+            //     var isNotEqual = this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)];
+            //     var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
+            //     temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
+            //     if (isNotEqual)
+            //     {
+            //         vertListValues[counter++] = this[new VertListZIndexer(i)];
+            //     }
+            //     
+            //     if (i % 8 == 7)
+            //     {
+            //         packer.WriteByte(temp);
+            //         temp = 0;
+            //     }
+            // }
+            //
+            // if ((VertListZCount - 1) % 8 != 7)
+            // {
+            //     packer.WriteByte(temp);
+            // }
+            //
+            // packer.WriteBytes(vertListValues, 0, counter);
+            //
+            // #endregion
+        }
 
-            #region Indices
+        public virtual void NotGeneratedDeserSerDiff(ISerializer packer, ChunkDTO data)
+        {
+            var other = data;
+            Generation = packer.ReadByte(8);
 
-            packer.WriteInt(IndicesCount, 13);
-            
-            var indicesValues = new byte[IndicesCount * 2];
-            for (var i = 0; i < IndicesCount; i++)
+            var maskBitsCount = GetMaskBitsCount(TerraformingDtoCalculatorConstants.VerticesMaxCount);
+            var mask = new byte[maskBitsCount];
+            packer.ReadBytes(mask, 0, maskBitsCount);
+
+            var coutdesered = 0;
+            var countcopied = 1;
+
+            for (var i = 0; i < VerticesCount; i++)
             {
-                var isNotEqual = this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)];
-                var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
-                temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
-                if (isNotEqual)
+                if (GetIsEqual(mask[GetByteIndex(i)], i))
                 {
-                    var byteArray = new IntToByte
-                    {
-                        val = this[new IndicesIndexer(i)]
-                    };
-                    byteArray.ToByteArray(conversionsBuffer, out _);
-                    
-                    indicesValues[counter++] = conversionsBuffer[0];
-                    indicesValues[counter++] = conversionsBuffer[1];
+                    this[new VerticesIndexer(i)] = packer.ReadShort();
+                    coutdesered++;
                 }
-                
-                if (i % 8 == 7)
+                else
                 {
-                    packer.WriteByte(temp);
-                    temp = 0;
+                    this[new VerticesIndexer(i)] = other[new VerticesIndexer(i)];
+                    countcopied++;
                 }
             }
             
-            if ((IndicesCount - 1) % 8 != 7)
+            Debug.Log($"desede {coutdesered} copied {countcopied}");
+        }
+
+        private int GetMaskBitsCount(int count)
+        {
+            if (count % 8 == 0)
             {
-                packer.WriteByte(temp);
+                return count / 8;
             }
-            
-            packer.WriteBytes(indicesValues, 0, counter);
 
-            #endregion
-            
-            temp = 0;
-            counter = 0;
+            return (count / 8) + 1;
+        }
 
-            #region VertListX
+        private bool GetIsEqual(byte byteValue, int index)
+        {
+            var bitIndex = index % 8;
+            return (byteValue & 1 << bitIndex) != 0;
+        }
 
-            packer.WriteInt(VertListXCount, 13);
-            
-            var vertListValues = new byte[VertListXCount];
-            for (var i = 0; i < VertListXCount; i++)
-            {
-                var isNotEqual = this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)];
-                var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
-                temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
-                if (isNotEqual)
-                {
-                    vertListValues[counter++] = this[new VertListXIndexer(i)];
-                }
-                
-                if (i % 8 == 7)
-                {
-                    packer.WriteByte(temp);
-                    temp = 0;
-                }
-            }
-            
-            if ((VertListXCount - 1) % 8 != 7)
-            {
-                packer.WriteByte(temp);
-            }
-            
-            packer.WriteBytes(vertListValues, 0, counter);
-
-            #endregion
-            
-            temp = 0;
-            counter = 0;
-
-            #region VertListY
-
-            packer.WriteInt(VertListYCount, 13);
-            
-            for (var i = 0; i < VertListYCount; i++)
-            {
-                var isNotEqual = this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)];
-                var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
-                temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
-                if (isNotEqual)
-                {
-                    vertListValues[counter++] = this[new VertListYIndexer(i)];
-                }
-                
-                if (i % 8 == 7)
-                {
-                    packer.WriteByte(temp);
-                    temp = 0;
-                }
-            }
-            
-            if ((VertListYCount - 1) % 8 != 7)
-            {
-                packer.WriteByte(temp);
-            }
-            
-            packer.WriteBytes(vertListValues, 0, counter);
-
-            #endregion
-
-            temp = 0;
-            counter = 0;
-
-            #region VertListZ
-
-            packer.WriteInt(VertListZCount, 13);
-            
-            for (var i = 0; i < VertListZCount; i++)
-            {
-                var isNotEqual = this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)];
-                var isNotEqualByte = isNotEqual ? (byte) 1 : (byte) 0;
-                temp = (byte)(temp | (isNotEqualByte << (byte) (i % 8)));
-                if (isNotEqual)
-                {
-                    vertListValues[counter++] = this[new VertListZIndexer(i)];
-                }
-                
-                if (i % 8 == 7)
-                {
-                    packer.WriteByte(temp);
-                    temp = 0;
-                }
-            }
-            
-            if ((VertListZCount - 1) % 8 != 7)
-            {
-                packer.WriteByte(temp);
-            }
-            
-            packer.WriteBytes(vertListValues, 0, counter);
-
-            #endregion
+        private int GetByteIndex(int index)
+        {
+            return index / 8;
         }
     }
 }

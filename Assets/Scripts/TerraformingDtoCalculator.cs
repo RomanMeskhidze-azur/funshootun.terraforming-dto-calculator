@@ -53,25 +53,25 @@ namespace TerraformingDtoCalculator
                     chunkDto.Vertices[j] = 0;
                 }
 
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)
-                {
-                    chunkDto.Indices.Add(0);
-                }
-
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListX.Add(0);
-                }
-                
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListY.Add(0);
-                }
-                
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListZ.Add(0);
-                }
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)
+                // {
+                //     chunkDto.Indices.Add(0);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListX.Add(0);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListY.Add(0);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListZ.Add(0);
+                // }
 
                 chunkDto.Generation = 1;
                 SetNextCoordinates(chunkDto);
@@ -130,25 +130,25 @@ namespace TerraformingDtoCalculator
                     chunkDto.Vertices[j] = 1;
                 }
 
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)
-                {
-                    chunkDto.Indices.Add(1);
-                }
-
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListX.Add(1);
-                }
-                
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListY.Add(1);
-                }
-                
-                for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
-                {
-                    chunkDto.VertListZ.Add(1);
-                }
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.IndicesMaxCount; j++)
+                // {
+                //     chunkDto.Indices.Add(1);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListX.Add(1);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListY.Add(1);
+                // }
+                //
+                // for (var j = 0; j < TerraformingDtoCalculatorConstants.VertListMaxCount; j++)
+                // {
+                //     chunkDto.VertListZ.Add(1);
+                // }
                 
                 chunkDto.Generation = 2;
                 
@@ -237,14 +237,14 @@ namespace TerraformingDtoCalculator
 
             Profiler.BeginSample("NotGeneratedDeserDiff");
             
-            //var deseredDto = new FromServerDto();
-            //deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
+            var deseredDto = new FromServerDto();
+            deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
             
             Profiler.EndSample();
             
             deserStopWatch.Stop();
             
-            //Debug.Log($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
+            Debug.Log($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
 
             return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
         }

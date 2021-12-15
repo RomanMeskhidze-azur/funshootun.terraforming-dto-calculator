@@ -271,7 +271,7 @@ namespace TerraformingDtoCalculator
                         packer.WriteShort(this[new VerticesIndexer(i)], 14);
                     }
                 }
-                //Profiler.EndSample();
+              //  Profiler.EndSample();
             // }
             // else
             // {
@@ -292,145 +292,145 @@ namespace TerraformingDtoCalculator
             //     }
             // }
 
-           // Profiler.BeginSample("IterateIndices");
-            packer.WriteInt(IndicesCount, 13);
-            var IndicesCountEqual = IndicesCount == other.IndicesCount;
-            packer.WriteBool(IndicesCountEqual);
-            if (IndicesCountEqual)
-            {
-                for (int i = 0; i < IndicesCount; i++)
-                {
-                    packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
-                    if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
-                    {
-                        packer.WriteInt(this[new IndicesIndexer(i)], 13);
-                    }
-                }
-            }
-            else
-            {
-                var countToDiff = IndicesCount < other.IndicesCount ? IndicesCount : other.IndicesCount;
-                packer.WriteInt(countToDiff, 13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
-                    if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
-                    {
-                        packer.WriteInt(this[new IndicesIndexer(i)], 13);
-                    }
-                }
-
-                for (int i = countToDiff; i < IndicesCount; i++)
-                {
-                    packer.WriteInt(this[new IndicesIndexer(i)], 13);
-                }
-            }
-           // Profiler.EndSample();
-
-           // Profiler.BeginSample("IterateVertListX");
-            packer.WriteInt(VertListXCount, 13);
-            var VertListXCountEqual = VertListXCount == other.VertListXCount;
-            packer.WriteBool(VertListXCountEqual);
-            if (VertListXCountEqual)
-            {
-                for (int i = 0; i < VertListXCount; i++)
-                {
-                    packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
-                    if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListXIndexer(i)], 8);
-                    }
-                }
-            }
-            else
-            {
-                var countToDiff = VertListXCount < other.VertListXCount ? VertListXCount : other.VertListXCount;
-                packer.WriteInt(countToDiff, 13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
-                    if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListXIndexer(i)], 8);
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListXCount; i++)
-                {
-                    packer.WriteByte(this[new VertListXIndexer(i)], 8);
-                }
-            }
-            //Profiler.EndSample();
-
-           // Profiler.BeginSample("IterateVertListY");
-            packer.WriteInt(VertListYCount, 13);
-            var VertListYCountEqual = VertListYCount == other.VertListYCount;
-            packer.WriteBool(VertListYCountEqual);
-            if (VertListYCountEqual)
-            {
-                for (int i = 0; i < VertListYCount; i++)
-                {
-                    packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
-                    if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListYIndexer(i)], 8);
-                    }
-                }
-            }
-            else
-            {
-                var countToDiff = VertListYCount < other.VertListYCount ? VertListYCount : other.VertListYCount;
-                packer.WriteInt(countToDiff, 13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
-                    if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListYIndexer(i)], 8);
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListYCount; i++)
-                {
-                    packer.WriteByte(this[new VertListYIndexer(i)], 8);
-                }
-            }
-           // Profiler.EndSample();
-
-           // Profiler.BeginSample("IterateVertListZ");
-            packer.WriteInt(VertListZCount, 13);
-            var VertListZCountEqual = VertListZCount == other.VertListZCount;
-            packer.WriteBool(VertListZCountEqual);
-            if (VertListZCountEqual)
-            {
-                for (int i = 0; i < VertListZCount; i++)
-                {
-                    packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
-                    if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListZIndexer(i)], 8);
-                    }
-                }
-            }
-            else
-            {
-                var countToDiff = VertListZCount < other.VertListZCount ? VertListZCount : other.VertListZCount;
-                packer.WriteInt(countToDiff, 13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
-                    if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
-                    {
-                        packer.WriteByte(this[new VertListZIndexer(i)], 8);
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListZCount; i++)
-                {
-                    packer.WriteByte(this[new VertListZIndexer(i)], 8);
-                }
-            }
-            //Profiler.EndSample();
+            // Profiler.BeginSample("IterateIndices");
+            // packer.WriteInt(IndicesCount, 13);
+            // var IndicesCountEqual = IndicesCount == other.IndicesCount;
+            // packer.WriteBool(IndicesCountEqual);
+            // if (IndicesCountEqual)
+            // {
+            //     for (int i = 0; i < IndicesCount; i++)
+            //     {
+            //         packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
+            //         if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
+            //         {
+            //             packer.WriteInt(this[new IndicesIndexer(i)], 13);
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     var countToDiff = IndicesCount < other.IndicesCount ? IndicesCount : other.IndicesCount;
+            //     packer.WriteInt(countToDiff, 13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         packer.WriteBool(this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)]);
+            //         if (this[new IndicesIndexer(i)] != other[new IndicesIndexer(i)])
+            //         {
+            //             packer.WriteInt(this[new IndicesIndexer(i)], 13);
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < IndicesCount; i++)
+            //     {
+            //         packer.WriteInt(this[new IndicesIndexer(i)], 13);
+            //     }
+            // }
+            // Profiler.EndSample();
+            //
+            // Profiler.BeginSample("IterateVertListX");
+            // packer.WriteInt(VertListXCount, 13);
+            // var VertListXCountEqual = VertListXCount == other.VertListXCount;
+            // packer.WriteBool(VertListXCountEqual);
+            // if (VertListXCountEqual)
+            // {
+            //     for (int i = 0; i < VertListXCount; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
+            //         if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListXIndexer(i)], 8);
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     var countToDiff = VertListXCount < other.VertListXCount ? VertListXCount : other.VertListXCount;
+            //     packer.WriteInt(countToDiff, 13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)]);
+            //         if (this[new VertListXIndexer(i)] != other[new VertListXIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListXIndexer(i)], 8);
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListXCount; i++)
+            //     {
+            //         packer.WriteByte(this[new VertListXIndexer(i)], 8);
+            //     }
+            // }
+            // Profiler.EndSample();
+            //
+            // Profiler.BeginSample("IterateVertListY");
+            // packer.WriteInt(VertListYCount, 13);
+            // var VertListYCountEqual = VertListYCount == other.VertListYCount;
+            // packer.WriteBool(VertListYCountEqual);
+            // if (VertListYCountEqual)
+            // {
+            //     for (int i = 0; i < VertListYCount; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
+            //         if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListYIndexer(i)], 8);
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     var countToDiff = VertListYCount < other.VertListYCount ? VertListYCount : other.VertListYCount;
+            //     packer.WriteInt(countToDiff, 13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)]);
+            //         if (this[new VertListYIndexer(i)] != other[new VertListYIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListYIndexer(i)], 8);
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListYCount; i++)
+            //     {
+            //         packer.WriteByte(this[new VertListYIndexer(i)], 8);
+            //     }
+            // }
+            // Profiler.EndSample();
+            //
+            // Profiler.BeginSample("IterateVertListZ");
+            // packer.WriteInt(VertListZCount, 13);
+            // var VertListZCountEqual = VertListZCount == other.VertListZCount;
+            // packer.WriteBool(VertListZCountEqual);
+            // if (VertListZCountEqual)
+            // {
+            //     for (int i = 0; i < VertListZCount; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
+            //         if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListZIndexer(i)], 8);
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     var countToDiff = VertListZCount < other.VertListZCount ? VertListZCount : other.VertListZCount;
+            //     packer.WriteInt(countToDiff, 13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         packer.WriteBool(this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)]);
+            //         if (this[new VertListZIndexer(i)] != other[new VertListZIndexer(i)])
+            //         {
+            //             packer.WriteByte(this[new VertListZIndexer(i)], 8);
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListZCount; i++)
+            //     {
+            //         packer.WriteByte(this[new VertListZIndexer(i)], 8);
+            //     }
+            // }
+            // Profiler.EndSample();
         }
 
         public virtual void DeserDiff(ISerializer packer, ChunkDTO data)
@@ -475,157 +475,157 @@ namespace TerraformingDtoCalculator
             //     }
             // }
 
-            IndicesCount = packer.ReadInt(13);
-            var IndicesCountEqual = packer.ReadBool();
-            if (IndicesCountEqual)
-            {
-                for (int i = 0; i < IndicesCount; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new IndicesIndexer(i)] = packer.ReadInt(13);
-                    }
-                    else
-                    {
-                        this[new IndicesIndexer(i)] = other[new IndicesIndexer(i)];
-                    }
-                }
-            }
-            else
-            {
-                int countToDiff;
-                countToDiff = packer.ReadInt(13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new IndicesIndexer(i)] = packer.ReadInt(13);
-                    }
-                    else
-                    {
-                        this[new IndicesIndexer(i)] = other[new IndicesIndexer(i)];
-                    }
-                }
-
-                for (int i = countToDiff; i < IndicesCount; i++)
-                {
-                    this[new IndicesIndexer(i)] = packer.ReadInt(13);
-                }
-            }
-
-            VertListXCount = packer.ReadInt(13);
-            var VertListXCountEqual = packer.ReadBool();
-            if (VertListXCountEqual)
-            {
-                for (int i = 0; i < VertListXCount; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListXIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListXIndexer(i)] = other[new VertListXIndexer(i)];
-                    }
-                }
-            }
-            else
-            {
-                int countToDiff;
-                countToDiff = packer.ReadInt(13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListXIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListXIndexer(i)] = other[new VertListXIndexer(i)];
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListXCount; i++)
-                {
-                    this[new VertListXIndexer(i)] = packer.ReadByte(8);
-                }
-            }
-
-            VertListYCount = packer.ReadInt(13);
-            var VertListYCountEqual = packer.ReadBool();
-            if (VertListYCountEqual)
-            {
-                for (int i = 0; i < VertListYCount; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListYIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListYIndexer(i)] = other[new VertListYIndexer(i)];
-                    }
-                }
-            }
-            else
-            {
-                int countToDiff;
-                countToDiff = packer.ReadInt(13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListYIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListYIndexer(i)] = other[new VertListYIndexer(i)];
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListYCount; i++)
-                {
-                    this[new VertListYIndexer(i)] = packer.ReadByte(8);
-                }
-            }
-
-            VertListZCount = packer.ReadInt(13);
-            var VertListZCountEqual = packer.ReadBool();
-            if (VertListZCountEqual)
-            {
-                for (int i = 0; i < VertListZCount; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListZIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListZIndexer(i)] = other[new VertListZIndexer(i)];
-                    }
-                }
-            }
-            else
-            {
-                int countToDiff;
-                countToDiff = packer.ReadInt(13);
-                for (int i = 0; i < countToDiff; i++)
-                {
-                    if (packer.ReadBool())
-                    {
-                        this[new VertListZIndexer(i)] = packer.ReadByte(8);
-                    }
-                    else
-                    {
-                        this[new VertListZIndexer(i)] = other[new VertListZIndexer(i)];
-                    }
-                }
-
-                for (int i = countToDiff; i < VertListZCount; i++)
-                {
-                    this[new VertListZIndexer(i)] = packer.ReadByte(8);
-                }
-            }
+            // IndicesCount = packer.ReadInt(13);
+            // var IndicesCountEqual = packer.ReadBool();
+            // if (IndicesCountEqual)
+            // {
+            //     for (int i = 0; i < IndicesCount; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new IndicesIndexer(i)] = packer.ReadInt(13);
+            //         }
+            //         else
+            //         {
+            //             this[new IndicesIndexer(i)] = other[new IndicesIndexer(i)];
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     int countToDiff;
+            //     countToDiff = packer.ReadInt(13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new IndicesIndexer(i)] = packer.ReadInt(13);
+            //         }
+            //         else
+            //         {
+            //             this[new IndicesIndexer(i)] = other[new IndicesIndexer(i)];
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < IndicesCount; i++)
+            //     {
+            //         this[new IndicesIndexer(i)] = packer.ReadInt(13);
+            //     }
+            // }
+            //
+            // VertListXCount = packer.ReadInt(13);
+            // var VertListXCountEqual = packer.ReadBool();
+            // if (VertListXCountEqual)
+            // {
+            //     for (int i = 0; i < VertListXCount; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListXIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListXIndexer(i)] = other[new VertListXIndexer(i)];
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     int countToDiff;
+            //     countToDiff = packer.ReadInt(13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListXIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListXIndexer(i)] = other[new VertListXIndexer(i)];
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListXCount; i++)
+            //     {
+            //         this[new VertListXIndexer(i)] = packer.ReadByte(8);
+            //     }
+            // }
+            //
+            // VertListYCount = packer.ReadInt(13);
+            // var VertListYCountEqual = packer.ReadBool();
+            // if (VertListYCountEqual)
+            // {
+            //     for (int i = 0; i < VertListYCount; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListYIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListYIndexer(i)] = other[new VertListYIndexer(i)];
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     int countToDiff;
+            //     countToDiff = packer.ReadInt(13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListYIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListYIndexer(i)] = other[new VertListYIndexer(i)];
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListYCount; i++)
+            //     {
+            //         this[new VertListYIndexer(i)] = packer.ReadByte(8);
+            //     }
+            // }
+            //
+            // VertListZCount = packer.ReadInt(13);
+            // var VertListZCountEqual = packer.ReadBool();
+            // if (VertListZCountEqual)
+            // {
+            //     for (int i = 0; i < VertListZCount; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListZIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListZIndexer(i)] = other[new VertListZIndexer(i)];
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     int countToDiff;
+            //     countToDiff = packer.ReadInt(13);
+            //     for (int i = 0; i < countToDiff; i++)
+            //     {
+            //         if (packer.ReadBool())
+            //         {
+            //             this[new VertListZIndexer(i)] = packer.ReadByte(8);
+            //         }
+            //         else
+            //         {
+            //             this[new VertListZIndexer(i)] = other[new VertListZIndexer(i)];
+            //         }
+            //     }
+            //
+            //     for (int i = countToDiff; i < VertListZCount; i++)
+            //     {
+            //         this[new VertListZIndexer(i)] = packer.ReadByte(8);
+            //     }
+            // }
         }
     }
 }

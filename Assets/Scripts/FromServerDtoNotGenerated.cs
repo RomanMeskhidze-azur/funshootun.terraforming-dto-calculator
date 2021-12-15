@@ -104,7 +104,7 @@ namespace TerraformingDtoCalculator
                     Z = chunkZ
                 };
                 Profiler.BeginSample("DeserDiff");
-                newChunk.DeserDiff(packer, prevChunk);
+                newChunk.NotGeneratedDeserSerDiff(packer, prevChunk);
                 Profiler.EndSample();
                 newChunks.Add(newChunk);
                 
