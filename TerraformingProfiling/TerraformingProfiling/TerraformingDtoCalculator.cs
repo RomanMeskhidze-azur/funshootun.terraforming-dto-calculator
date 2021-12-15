@@ -235,14 +235,14 @@ namespace TerraformingDtoCalculator
 
            // Profiler.BeginSample("NotGeneratedDeserDiff");
             
-            var deseredDto = new FromServerDto();
-            deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
+            //var deseredDto = new FromServerDto();
+           // deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
             
           //  Profiler.EndSample();
             
             deserStopWatch.Stop();
             
-            Console.WriteLine($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
+            //Console.WriteLine($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
 
             return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
         }
