@@ -33,7 +33,7 @@ namespace TerraformingDtoCalculator
                     var biteMask = 1 << mask;
                     packer.WriteInt(biteMask, 8);
                 }
-                ocTree.NewTreeNode.SerDiff(packer, ocTree.OldTreeNode);
+                ocTree.NewTreeNode.NotGeneratedSerDiff(packer, ocTree.OldTreeNode);
                 masks.RemoveAt(masks.Count - 1);
                 return;
             }

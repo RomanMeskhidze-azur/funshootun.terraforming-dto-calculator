@@ -11,10 +11,7 @@ namespace TerraformingDtoCalculator
 
         public FromServerDto()
         {
-            for (int i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
-            {
-                ChankDtos.Add(new ChunkDTO());
-            }
+            ChankDtos.AddRange(Enumerable.Repeat(new ChunkDTO(), TerraformingDtoCalculatorConstants.ChunksMaxCount));
         }
 
         #region CodeGen

@@ -46,7 +46,7 @@ namespace TerraformingDtoCalculator
 
             for (var i = 0; i < TerraformingDtoCalculatorConstants.ChunksMaxCount; i++)
             {
-                var chunkDto = _initialFromServerDto.ChankDtos[i];
+                var chunkDto = new ChunkDTO();
 
                 for (var j = 0; j < TerraformingDtoCalculatorConstants.VerticesMaxCount; j++)
                 {
@@ -75,6 +75,8 @@ namespace TerraformingDtoCalculator
 
                 chunkDto.Generation = 1;
                 SetNextCoordinates(chunkDto);
+                
+                _initialFromServerDto.ChankDtos[i] = chunkDto;
             }
             
             stopwatch.Stop();
@@ -235,14 +237,14 @@ namespace TerraformingDtoCalculator
 
             Profiler.BeginSample("NotGeneratedDeserDiff");
             
-            var deseredDto = new FromServerDto();
-            deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
+            //var deseredDto = new FromServerDto();
+            //deseredDto.NotGeneratedDeserDiff(clientDeserPacker, _initialFromServerDto, _ocTree);
             
             Profiler.EndSample();
             
             deserStopWatch.Stop();
             
-            Debug.Log($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
+            //Debug.Log($"not generated ser and deser equals {_differentFromServerDto.IsEqual(deseredDto)}");
 
             return (serStopwatch.ElapsedMilliseconds, ms.Position, deserStopWatch.ElapsedMilliseconds);
         }
