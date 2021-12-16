@@ -82,16 +82,12 @@ namespace TerraformingDtoCalculator
             var newChunks = new List<ChunkIndexPair>(125);
             var countChunks = packer.ReadInt(13);
             
-            //Profiler.BeginSample("Deserialize_OcTree");
             for (var i = 0; i < countChunks; i++)
             {
                 DeserializeOcTree(packer, ocTree, other, newChunks);
             }
-          //  Profiler.EndSample();
 
-          //  Profiler.BeginSample("ProcessDeserialized_ocTree");
             ProcessDeserializedChunks(other, newChunks);
-          //  Profiler.EndSample();
         }
 
         private void DeserializeOcTree(ISerializer packer, OcTree<ChunkDTO> ocTree, FromServerDto other, List<ChunkIndexPair> newChunks)
@@ -103,9 +99,7 @@ namespace TerraformingDtoCalculator
                 var chunkX = octPosition.X - 1;
                 var chunkY = octPosition.Y - 1;
                 var chunkZ = octPosition.Z - 1;
-            //    Profiler.BeginSample("FindInDeserOcTree");
                 var prevChunkIndex = other.ChankDtos.FindIndex(x => x.X == chunkX && x.Y == chunkY && x.Z == chunkZ);
-             //   Profiler.EndSample();
 
                 var newChunk = new ChunkDTO
                 {
@@ -113,18 +107,14 @@ namespace TerraformingDtoCalculator
                     Y = chunkY,
                     Z = chunkZ
                 };
-             //   Profiler.BeginSample("DeserDiff");
                 newChunk.NotGeneratedDeserSerDiff(packer, other.ChankDtos[prevChunkIndex]);
-             //   Profiler.EndSample();
                 newChunks.Add(new ChunkIndexPair(prevChunkIndex, newChunk));
                 
                 return;
             }
 
             var mask = packer.ReadInt(8);
-          //  Profiler.BeginSample("Deserialize_GetIndexByMask");
             var index = GetIndexByMask(mask);
-         //   Profiler.EndSample();
             DeserializeOcTree(packer, ocTree.Childs[index], other, newChunks);
         }
 

@@ -47,9 +47,9 @@ namespace TerraformingDtoCalculator
 
             var serDiffTime = _terraformingDtoCalculator.SerDeserDiff();
 
-            var notGeneratedSerDiffTime = _terraformingDtoCalculator.NotGeneratedSerDeserDiff();
+            //var notGeneratedSerDiffTime = _terraformingDtoCalculator.NotGeneratedSerDeserDiff();
 
-            _resultText.text = $"Result: Fill init dto {fillInitializeTime}ms.; Fill different dto {fillDifferentTime}ms.\nSerDiff {serDiffTime.Item1}ms. {serDiffTime.Item2} bytes\nDeserDiff {serDiffTime.Item3}ms.\nNotGeneratedSerDiff {notGeneratedSerDiffTime.Item1}ms. {notGeneratedSerDiffTime.Item2} bytes\nNotGeneratedDeserDiff {notGeneratedSerDiffTime.Item3}ms.";
+            _resultText.text = $"Result: Fill init dto {fillInitializeTime}ms.; Fill different dto {fillDifferentTime}ms.\nSerDiff {serDiffTime.Item1}ms. {serDiffTime.Item2} bytes\nDeserDiff {serDiffTime.Item3}ms.";
         }
     }
 }
